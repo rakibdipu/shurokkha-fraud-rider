@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RazorFlow Enterprise — Full-Stack FinTech Engine</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Libraries -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ── Base ─────────────────────────────────────── */
+    body {
+      background-color: #F1F5F9;
+      background-image: radial-gradient(ellipse at 60% 0%, #EEF2FF 0%, transparent 55%);
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* ── Cards ─────────────────────────────────────── */
+    .light-card {
+      background: #FFFFFF;
+      border: 1px solid #E8EDF5;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.03);
+      transition: box-shadow 0.2s ease;
+    }
+    .light-card:hover {
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    .light-card-elevated {
+      background: #FFFFFF;
+      border: 1px solid #E8EDF5;
+      box-shadow: 0 4px 24px -4px rgba(79, 70, 229, 0.09), 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    /* ── Inputs ─────────────────────────────────────── */
+    .light-input {
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      color: #0F172A;
+      transition: all 0.18s ease;
+    }
+    .light-input:focus {
+      background: #FFFFFF;
+      border-color: #6366F1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+      outline: none;
+    }
+    .light-input::placeholder { color: #94A3B8; }
+
+    /* ── Navigation tabs ─────────────────────────────── */
+    .nav-tab {
+      transition: all 0.15s ease;
+      color: #64748B;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .nav-tab:hover { color: #334155; background: #F1F5F9; }
+    .nav-tab.active {
+      color: #4338CA;
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      font-weight: 700;
+    }
+
+    /* ── Realistic bank card preview ──────────────────── */
+    .credit-card-preview {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2D3748 100%);
+      box-shadow: 0 20px 40px -6px rgba(15, 23, 42, 0.40), 0 4px 10px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    /* ── Scrollbar ─────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    /* ── Badges ─────────────────────────────────────── */
+    .badge-allow     { background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; font-weight: 700; }
+    .badge-challenge { background: #FEFCE8; color: #854D0E; border: 1px solid #FDE68A; font-weight: 700; }
+    .badge-block     { background: #FFF1F2; color: #9F1239; border: 1px solid #FECDD3; font-weight: 700; }
+
+    /* ── Spinner ─────────────────────────────────────── */
+    .spinner-sm {
+      border: 2px solid #E2E8F0;
+      border-top-color: #6366F1;
+      border-radius: 50%;
+      width: 15px; height: 15px;
+      animation: spin 0.55s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Divider lines ───────────────────────────────── */
+    hr, .border-b { border-color: #F1F5F9; }
+
+    /* ── Subtle table row hover ───────────────────────── */
+    tbody tr:hover td { background: #F8FAFC; transition: background 0.1s ease; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased" style="background-color:#F1F5F9">
+
+  <!-- TOP APP BAR -->
+  <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-sm sticky top-0 z-50" style="box-shadow: 0 1px 6px rgba(15,23,42,0.06);">
+    <div class="w-full px-6 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white">
+          <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg tracking-tight text-slate-900">RazorFlow</span>
+            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">Ultimate Engine</span>
+          </div>
+          <p class="text-xs text-slate-500 hidden sm:block">Unified Payments, Smart Multi-Acquirer Switch & Sentinel AI</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-slate-700 font-medium">Auto-Cascade Switch: <strong class="text-indigo-600">Active</strong></span>
+          <span class="text-slate-300">|</span>
+          <span class="text-slate-600">Ledger: <strong class="text-emerald-700 font-mono">100% Balanced</strong></span>
+        </div>
+
+        <a href="/docs" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-700 transition flex items-center gap-1.5 shadow-sm">
+          <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          API Docs
+        </a>
+
+        <button onclick="refreshAll()" class="p-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-slate-600 transition shadow-sm" title="Refresh Live Data">
+          <svg id="refresh-icon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 9 UNIFIED FINTECH TABS -->
+    <div class="w-full px-6 flex space-x-1.5 overflow-x-auto py-2 border-t border-slate-100 text-xs">
+      <button onclick="switchTab('checkout')" id="tab-checkout" class="nav-tab active px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        💳 Checkout
+      </button>
+      <button onclick="switchTab('routing')" id="tab-routing" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        ⚡ Smart Routing
+      </button>
+      <button onclick="switchTab('fraud')" id="tab-fraud" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🛡 Fraud Radar
+      </button>
+      <button onclick="switchTab('geomap')" id="tab-geomap" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🌍 Geo Heatmap
+      </button>
+      <button onclick="switchTab('marketplace')" id="tab-marketplace" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🏪 Split Payments
+      </button>
+      <button onclick="switchTab('subscriptions')" id="tab-subscriptions" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🔄 Subscriptions
+      </button>
+      <button onclick="switchTab('disputes')" id="tab-disputes" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        ⚖️ Disputes
+      </button>
+      <button onclick="switchTab('ledger')" id="tab-ledger" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        📒 Ledger
+      </button>
+      <button onclick="switchTab('webhooks')" id="tab-webhooks" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🔔 Webhooks
+      </button>
+      <button onclick="switchTab('recon')" id="tab-recon" class="nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+        🔍 Reconciliation
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1 w-full px-6 py-6">
+
+    <!-- ============================================================== -->
+    <!-- TAB 1: CHECKOUT SIMULATOR                                      -->
+    <!-- ============================================================== -->
+    <div id="section-checkout" class="space-y-6">
+      
+      <!-- Top Live Banner KPIs -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="light-card p-5 rounded-2xl">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Volume Processed</div>
+          <div class="text-2xl font-extrabold font-mono text-slate-900 mt-1" id="kpi-total-volume">₹2,87,704.00</div>
+          <div class="text-[11px] text-emerald-600 mt-1.5 font-bold flex items-center gap-1">
+            <span>↑ 100% ACID Integrity</span>
+          </div>
+        </div>
+        <div class="light-card p-5 rounded-2xl">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ALLOW Transactions</div>
+          <div class="text-2xl font-extrabold text-emerald-600 mt-1" id="kpi-allow-count">-</div>
+          <div class="text-[11px] text-slate-500 mt-1.5 font-medium">Instant Capture</div>
+        </div>
+        <div class="light-card p-5 rounded-2xl">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">3DS Challenge Rate</div>
+          <div class="text-2xl font-extrabold text-amber-600 mt-1" id="kpi-challenge-count">-</div>
+          <div class="text-[11px] text-slate-500 mt-1.5 font-medium">Step-Up Auth Triggered</div>
+        </div>
+        <div class="light-card p-5 rounded-2xl">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Fraud Prevention Rate</div>
+          <div class="text-2xl font-extrabold text-rose-600 mt-1" id="kpi-block-count">-</div>
+          <div class="text-[11px] text-rose-600 mt-1.5 font-bold" id="kpi-block-rate">0% Fraud Loss</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left: Razorpay Standard Clean Checkout Widget (7 Cols) -->
+        <div class="lg:col-span-7 light-card-elevated rounded-2xl p-6 sm:p-7">
+          
+          <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                <span>Merchant Standard Checkout</span>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-mono font-bold">SDK v1.0</span>
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Test instant authorization, 3DS step-up OTP, and fraud blocks</p>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400">Store:</span>
+              <div class="text-xs font-bold text-slate-800">TechShop India</div>
+            </div>
+          </div>
+
+          <!-- Quick Test Presets -->
+          <div class="mb-5">
+            <label class="text-xs font-bold tracking-wider text-slate-500 uppercase">Interactive Test Presets</label>
+            <div class="grid grid-cols-3 gap-2.5 mt-2">
+              <button onclick="setCard('4111111111111111','12/2027','123')" class="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200 text-left transition">
+                <div class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span> ALLOW Card
+                </div>
+                <div class="text-[10px] text-emerald-600 mt-0.5">Risk &lt; 30 (Instant)</div>
+              </button>
+
+              <button onclick="setCard('4000000000000002','06/2026','456')" class="p-3 rounded-xl bg-amber-50 hover:bg-amber-100/70 border border-amber-200 text-left transition">
+                <div class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-amber-500"></span> 3DS Challenge
+                </div>
+                <div class="text-[10px] text-amber-600 mt-0.5">Risk 30–69 (OTP)</div>
+              </button>
+
+              <button onclick="setCard('4000000000000069','03/2025','789')" class="p-3 rounded-xl bg-rose-50 hover:bg-rose-100/70 border border-rose-200 text-left transition">
+                <div class="text-xs font-bold text-rose-800 flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-rose-500"></span> BLOCK Card
+                </div>
+                <div class="text-[10px] text-rose-600 mt-0.5">Risk ≥ 70 (Fraud)</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Payment Rails Tabs -->
+          <div class="flex p-1 rounded-xl bg-slate-100 border border-slate-200 mb-5">
+            <button id="pm-card" onclick="setPaymentMethod('card')" class="flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm transition">
+              💳 Credit / Debit Card
+            </button>
+            <button id="pm-upi" onclick="setPaymentMethod('upi')" class="flex-1 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+              ⚡ Instant UPI / QR
+            </button>
+          </div>
+
+          <!-- Card Payment Section -->
+          <div id="card-section" class="space-y-4">
+            
+            <!-- Credit Card Visualizer -->
+            <div class="credit-card-preview rounded-2xl p-5 text-white relative overflow-hidden">
+              <div class="flex justify-between items-start mb-6">
+                <div class="w-10 h-7 rounded bg-amber-400/90 border border-amber-300/60 flex items-center justify-center shadow-inner">
+                  <div class="w-7 h-4 border border-amber-700/40 rounded-sm"></div>
+                </div>
+                <span id="card-brand-label" class="font-extrabold tracking-wider text-sm text-slate-200">VISA</span>
+              </div>
+              <div id="card-preview-number" class="font-mono text-lg tracking-widest font-semibold mb-4 text-white">
+                4111 1111 1111 1111
+              </div>
+              <div class="flex justify-between items-end text-xs">
+                <div>
+                  <div class="text-[9px] uppercase tracking-wider text-slate-400">Cardholder</div>
+                  <div id="card-preview-name" class="font-medium text-slate-100">RAZORFLOW TESTER</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[9px] uppercase tracking-wider text-slate-400">Expires</div>
+                  <div id="card-preview-exp" class="font-mono font-medium text-slate-100">12/27</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Inputs -->
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1.5">Card Number</label>
+              <input id="card-number" oninput="updateCardPreview()" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 placeholder-slate-400 outline-none" value="4111111111111111">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs font-bold text-slate-700 block mb-1.5">Expiration Date</label>
+                <input id="card-expiry" oninput="updateCardPreview()" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 placeholder-slate-400 outline-none" value="12/2027">
+              </div>
+              <div>
+                <label class="text-xs font-bold text-slate-700 block mb-1.5">Security Code (CVV)</label>
+                <input id="card-cvv" type="password" maxlength="4" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 placeholder-slate-400 outline-none" value="123">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- UPI Section -->
+          <div id="upi-section" class="hidden space-y-4">
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1.5">Virtual Payment Address (VPA)</label>
+              <input id="upi-vpa" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 placeholder-slate-400 outline-none" value="merchant@okhdfc">
+            </div>
+            <div class="flex flex-col items-center justify-center p-6 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <div id="upi-qr" class="p-3 bg-white rounded-xl shadow-md border border-slate-200 mb-3"></div>
+              <div class="text-xs text-slate-500 font-medium">Scan using Google Pay / PhonePe / Paytm</div>
+            </div>
+          </div>
+
+          <!-- Amount & Customer -->
+          <div class="grid grid-cols-2 gap-3 mt-4">
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1.5">Amount (INR)</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-2.5 text-sm font-bold text-slate-500">₹</span>
+                <input id="amount-inr" class="light-input w-full pl-8 pr-3.5 py-2.5 rounded-xl text-sm font-mono font-bold text-slate-900 outline-none" value="499.00">
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-700 block mb-1.5">Customer Email</label>
+              <input id="customer-email" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm text-slate-900 placeholder-slate-400 outline-none" value="user@domain.com">
+            </div>
+          </div>
+
+          <!-- 3DS Step-Up OTP Box -->
+          <div id="otp-section" class="hidden mt-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
+            <div class="flex items-center gap-2 text-amber-800 text-xs font-bold uppercase tracking-wider">
+              <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              3D-Secure 2.0 Step-Up Challenge
+            </div>
+            <p class="text-xs text-amber-900 mt-1">Bank issuer requires one-time password verification.</p>
+            <div id="otp-hint" class="text-xs font-mono text-emerald-700 font-bold mt-2"></div>
+            <input id="otp-input" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 mt-2 placeholder-slate-400 outline-none" placeholder="Enter 6-digit OTP">
+          </div>
+
+          <!-- Pay Button -->
+          <button id="pay-btn" onclick="processPayment()" class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 transition flex items-center justify-center gap-2">
+            <span>Authorize & Capture Payment</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+
+        </div>
+
+        <!-- Right: Telemetry & Distribution (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Live Result Badge Card -->
+          <div id="result-card" class="light-card rounded-2xl p-6">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
+              <span>Transaction Telemetry</span>
+              <span id="telemetry-status-pill" class="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-bold">IDLE</span>
+            </h3>
+
+            <!-- State Icon and Output -->
+            <div id="result-box" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+              <div id="result-icon" class="text-3xl mb-2">⚡</div>
+              <div id="result-title" class="text-base font-bold text-slate-900">Ready for Transaction</div>
+              <div id="result-msg" class="text-xs text-slate-500 mt-1">Select a test card preset and click Pay Now</div>
+            </div>
+
+            <!-- Risk Gauge & Meter -->
+            <div id="risk-display" class="mt-5 pt-4 border-t border-slate-100 space-y-3">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-slate-700">Sentinel Risk Score:</span>
+                <span id="risk-score-val" class="font-mono font-bold text-slate-900">0 / 100</span>
+              </div>
+              <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                <div id="risk-bar" class="h-full rounded-full transition-all duration-500 bg-emerald-500" style="width: 0%"></div>
+              </div>
+              <div class="flex justify-between text-[10px] font-bold text-slate-500">
+                <span class="text-emerald-700">0–29 ALLOW</span>
+                <span class="text-amber-700">30–69 3DS</span>
+                <span class="text-rose-700">70–100 BLOCK</span>
+              </div>
+            </div>
+
+            <!-- Raw JSON Output Drawer -->
+            <div id="txn-details" class="mt-4 pt-3 border-t border-slate-100 hidden">
+              <div class="text-[11px] font-bold text-slate-500 mb-1.5">Acquirer Receipt Payload:</div>
+              <pre id="txn-json" class="p-3 rounded-lg bg-slate-900 text-slate-100 font-mono text-[11px] overflow-x-auto max-h-48"></pre>
+            </div>
+          </div>
+
+          <!-- Transaction Distribution Chart -->
+          <div class="light-card rounded-2xl p-6">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">Risk Tier Distribution</h3>
+            <div class="h-44 flex items-center justify-center">
+              <canvas id="tier-chart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 2: SMART PAYMENT ROUTING & MULTI-ACQUIRER SWITCH           -->
+    <!-- ============================================================== -->
+    <div id="section-routing" class="space-y-6 hidden">
+      <div class="light-card p-6 rounded-2xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Multi-Acquirer Smart Router & Auto-Cascade Engine</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Dynamically switches across bank switches (HDFC, ICICI, Stripe, Chase) based on live uptime & processing fees</p>
+          </div>
+          <button onclick="loadGateways()" class="px-3.5 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-xs border border-indigo-200">
+            ↻ Refresh Health
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="gateways-grid">
+          <!-- Injected via JS -->
+        </div>
+
+        <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="text-xs font-bold text-slate-700 mb-1">⚡ Auto-Cascade Fallback Demo:</div>
+          <div class="text-xs text-slate-500">Click "Simulate Outage (DOWN)" on HDFC above. Then initiate a payment in Checkout — the engine will automatically detect the failure and cascade the charge to ICICI without dropping the customer!</div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <div class="light-card p-5 rounded-2xl">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">⚡ Dynamic Acquirer Routing Matrix</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="text-[11px] text-slate-500 border-b border-slate-200">
+                    <th class="pb-2 text-left font-bold">Gateway</th>
+                    <th class="pb-2 text-left font-bold">Rule Priority</th>
+                    <th class="pb-2 text-center font-bold">Fee %</th>
+                    <th class="pb-2 text-right font-bold">Failover Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-mono">
+                  <tr><td class="py-2 font-bold text-indigo-700">HDFC SmartGateway</td><td class="py-2 text-slate-600">P1 (Domestic Cards)</td><td class="py-2 text-center">1.65%</td><td class="py-2 text-right text-amber-600">Cascade → ICICI</td></tr>
+                  <tr><td class="py-2 font-bold text-indigo-700">ICICI Bank Core</td><td class="py-2 text-slate-600">P2 (Domestic Fallback)</td><td class="py-2 text-center">1.75%</td><td class="py-2 text-right text-amber-600">Cascade → STRIPE</td></tr>
+                  <tr><td class="py-2 font-bold text-indigo-700">Stripe Global</td><td class="py-2 text-slate-600">P3 (International / Visa)</td><td class="py-2 text-center">2.20%</td><td class="py-2 text-right text-amber-600">Cascade → CHASE</td></tr>
+                  <tr><td class="py-2 font-bold text-indigo-700">Chase Paymentech</td><td class="py-2 text-slate-600">P4 (Global USD/EUR)</td><td class="py-2 text-center">2.00%</td><td class="py-2 text-right text-rose-600">DLQ Exception</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="light-card p-5 rounded-2xl">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">📊 Traffic Volume Distribution</h4>
+            <div class="h-44">
+              <canvas id="routing-traffic-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: SENTINEL FRAUD RADAR                                   -->
+    <!-- ============================================================== -->
+    <div id="section-fraud" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="light-card p-5 rounded-2xl border-l-4 border-l-emerald-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider text-emerald-700">Tier 1: Low Risk (ALLOW)</div>
+              <div id="fraud-allow-count" class="text-3xl font-extrabold text-slate-900 mt-1">0</div>
+            </div>
+            <span class="p-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">✓</span>
+          </div>
+          <div class="text-xs text-slate-500 mt-2">Zero-latency straight through processing</div>
+        </div>
+
+        <div class="light-card p-5 rounded-2xl border-l-4 border-l-amber-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Tier 2: Medium Risk (3DS)</div>
+              <div id="fraud-challenge-count" class="text-3xl font-extrabold text-slate-900 mt-1">0</div>
+            </div>
+            <span class="p-2 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">▲</span>
+          </div>
+          <div class="text-xs text-slate-500 mt-2">Protected by 3D-Secure 2.0 biometric OTP challenge</div>
+        </div>
+
+        <div class="light-card p-5 rounded-2xl border-l-4 border-l-rose-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider text-rose-700">Tier 3: High Risk (BLOCK)</div>
+              <div id="fraud-block-count" class="text-3xl font-extrabold text-slate-900 mt-1">0</div>
+            </div>
+            <span class="p-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200">✕</span>
+          </div>
+          <div class="text-xs text-slate-500 mt-2">Prevented fraudulent chargebacks and stolen card tests</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="light-card rounded-2xl p-6">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Heuristic Velocity & Anomaly Rules</h3>
+              <p class="text-xs text-slate-500">Active real-time rule interceptors</p>
+            </div>
+            <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">7 Active</span>
+          </div>
+          <div id="fraud-rules-list" class="space-y-2.5">Loading rules...</div>
+        </div>
+
+        <div class="light-card rounded-2xl p-6">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Gradient Boosting ML Classifier</h3>
+              <p class="text-xs text-slate-500">Weight: 40% ML Probability + 60% Rule Heuristics</p>
+            </div>
+            <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">model.pkl Ready</span>
+          </div>
+          <div class="h-64">
+            <canvas id="fraud-dist-chart"></canvas>
+          </div>
+        </div>
+      </div>
+        <div class="light-card p-6 rounded-2xl mt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">📡 Real-Time Global Telemetry Stream</h4>
+            <span class="text-[11px] font-mono text-emerald-600 font-bold flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Streaming 5 Nodes</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+                  <th class="pb-2">Timestamp</th>
+                  <th class="pb-2">Node / City</th>
+                  <th class="pb-2">Origin IP</th>
+                  <th class="pb-2">Latency</th>
+                  <th class="pb-2">Risk Tier</th>
+                  <th class="pb-2 text-right">Interceptor Action</th>
+                </tr>
+              </thead>
+              <tbody id="geo-telemetry-tbody" class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">Live Just Now</td><td class="py-2 font-bold text-slate-900">Dhaka, BD (BGD-01)</td><td class="py-2 text-slate-600">103.144.12.8</td><td class="py-2 text-emerald-600">38ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">2s ago</td><td class="py-2 font-bold text-slate-900">London, UK (LON-04)</td><td class="py-2 text-slate-600">185.220.101.5</td><td class="py-2 text-emerald-600">112ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">5s ago</td><td class="py-2 font-bold text-rose-700">Tor Exit / Proxy Node</td><td class="py-2 text-rose-600">45.154.255.99</td><td class="py-2 text-rose-600">340ms</td><td><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-bold text-[10px]">BLOCK</span></td><td class="py-2 text-right text-rose-600 font-bold">Auto-Drop</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">9s ago</td><td class="py-2 font-bold text-slate-900">New York, US (NYC-02)</td><td class="py-2 text-slate-600">198.51.100.42</td><td class="py-2 text-emerald-600">95ms</td><td><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CHALLENGE</span></td><td class="py-2 text-right text-amber-600 font-bold">3DS 2.0 OTP</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">14s ago</td><td class="py-2 font-bold text-slate-900">Singapore, SG (SIN-01)</td><td class="py-2 text-slate-600">203.0.113.195</td><td class="py-2 text-emerald-600">54ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: GLOBAL GEO-FRAUD HEATMAP CANVAS                         -->
+    <!-- ============================================================== -->
+    <div id="section-geomap" class="space-y-6 hidden">
+      <div class="light-card p-6 rounded-2xl">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Global Real-Time Geo-Fraud Pings & Anomaly Radar</h3>
+            <p class="text-xs text-slate-500">Visualizing live transaction origins, VPN/Proxy flags, and Impossible Travel speed anomalies</p>
+          </div>
+          <button onclick="generateGeoPing()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white font-bold text-xs shadow-sm">
+            + Emit Live Test Ping
+          </button>
+        </div>
+
+        <!-- Canvas World Map Radar -->
+        <div class="relative bg-slate-900 rounded-2xl p-4 overflow-hidden shadow-inner h-96 flex items-center justify-center">
+          <canvas id="geoCanvas" width="900" height="360" class="w-full h-full"></canvas>
+          <div class="absolute bottom-4 left-4 bg-slate-800/90 backdrop-blur px-3 py-2 rounded-lg border border-slate-700 text-[11px] text-slate-300 font-mono space-y-1">
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span> Verified Clean Traffic</div>
+            <div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-rose-400"></span> High-Risk / Impossible Travel</div>
+          </div>
+        </div>
+      </div>
+        <div class="light-card p-6 rounded-2xl mt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">📡 Real-Time Global Telemetry Stream</h4>
+            <span class="text-[11px] font-mono text-emerald-600 font-bold flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Streaming 5 Nodes</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+                  <th class="pb-2">Timestamp</th>
+                  <th class="pb-2">Node / City</th>
+                  <th class="pb-2">Origin IP</th>
+                  <th class="pb-2">Latency</th>
+                  <th class="pb-2">Risk Tier</th>
+                  <th class="pb-2 text-right">Interceptor Action</th>
+                </tr>
+              </thead>
+              <tbody id="geo-telemetry-tbody" class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">Live Just Now</td><td class="py-2 font-bold text-slate-900">Dhaka, BD (BGD-01)</td><td class="py-2 text-slate-600">103.144.12.8</td><td class="py-2 text-emerald-600">38ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">2s ago</td><td class="py-2 font-bold text-slate-900">London, UK (LON-04)</td><td class="py-2 text-slate-600">185.220.101.5</td><td class="py-2 text-emerald-600">112ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">5s ago</td><td class="py-2 font-bold text-rose-700">Tor Exit / Proxy Node</td><td class="py-2 text-rose-600">45.154.255.99</td><td class="py-2 text-rose-600">340ms</td><td><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-bold text-[10px]">BLOCK</span></td><td class="py-2 text-right text-rose-600 font-bold">Auto-Drop</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">9s ago</td><td class="py-2 font-bold text-slate-900">New York, US (NYC-02)</td><td class="py-2 text-slate-600">198.51.100.42</td><td class="py-2 text-emerald-600">95ms</td><td><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CHALLENGE</span></td><td class="py-2 text-right text-amber-600 font-bold">3DS 2.0 OTP</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">14s ago</td><td class="py-2 font-bold text-slate-900">Singapore, SG (SIN-01)</td><td class="py-2 text-slate-600">203.0.113.195</td><td class="py-2 text-emerald-600">54ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 5: MARKETPLACE SPLIT PAYMENTS & PAYOUTS                    -->
+    <!-- ============================================================== -->
+    <div id="section-marketplace" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Vendors List -->
+        <div class="lg:col-span-7 light-card p-6 rounded-2xl">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Connected Sub-Merchants & Vendors</h3>
+              <p class="text-xs text-slate-500">Stripe Connect / Razorpay Route marketplace ledger</p>
+            </div>
+          </div>
+          <div class="space-y-3" id="vendors-list">Loading vendors...</div>
+        </div>
+
+        <!-- Instant Payout Box -->
+        <div class="lg:col-span-5 light-card p-6 rounded-2xl space-y-4">
+          <h3 class="text-base font-bold text-slate-900">Instant Vendor Payout Simulator</h3>
+          <p class="text-xs text-slate-500">Settle accumulated wallet balance instantly to virtual bank accounts.</p>
+          
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">Select Vendor</label>
+            <select id="payout-vendor-select" class="light-input w-full p-2.5 rounded-xl text-xs font-semibold outline-none"></select>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">Payout Amount (paise)</label>
+            <input id="payout-amount" type="number" class="light-input w-full p-2.5 rounded-xl text-xs font-mono font-bold outline-none" value="50000">
+          </div>
+          <button onclick="executeVendorPayout()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition">
+            Disburse Instant Payout
+          </button>
+          <div id="payout-result" class="text-xs font-mono"></div>
+        </div>
+      </div>
+        <div class="light-card p-6 rounded-2xl mt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">📡 Real-Time Global Telemetry Stream</h4>
+            <span class="text-[11px] font-mono text-emerald-600 font-bold flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Streaming 5 Nodes</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+                  <th class="pb-2">Timestamp</th>
+                  <th class="pb-2">Node / City</th>
+                  <th class="pb-2">Origin IP</th>
+                  <th class="pb-2">Latency</th>
+                  <th class="pb-2">Risk Tier</th>
+                  <th class="pb-2 text-right">Interceptor Action</th>
+                </tr>
+              </thead>
+              <tbody id="geo-telemetry-tbody" class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">Live Just Now</td><td class="py-2 font-bold text-slate-900">Dhaka, BD (BGD-01)</td><td class="py-2 text-slate-600">103.144.12.8</td><td class="py-2 text-emerald-600">38ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">2s ago</td><td class="py-2 font-bold text-slate-900">London, UK (LON-04)</td><td class="py-2 text-slate-600">185.220.101.5</td><td class="py-2 text-emerald-600">112ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">5s ago</td><td class="py-2 font-bold text-rose-700">Tor Exit / Proxy Node</td><td class="py-2 text-rose-600">45.154.255.99</td><td class="py-2 text-rose-600">340ms</td><td><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-bold text-[10px]">BLOCK</span></td><td class="py-2 text-right text-rose-600 font-bold">Auto-Drop</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">9s ago</td><td class="py-2 font-bold text-slate-900">New York, US (NYC-02)</td><td class="py-2 text-slate-600">198.51.100.42</td><td class="py-2 text-emerald-600">95ms</td><td><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CHALLENGE</span></td><td class="py-2 text-right text-amber-600 font-bold">3DS 2.0 OTP</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">14s ago</td><td class="py-2 font-bold text-slate-900">Singapore, SG (SIN-01)</td><td class="py-2 text-slate-600">203.0.113.195</td><td class="py-2 text-emerald-600">54ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 6: SUBSCRIPTIONS & AUTOPAY STUDIO                         -->
+    <!-- ============================================================== -->
+    <div id="section-subscriptions" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 light-card p-6 rounded-2xl space-y-4">
+          <h3 class="text-base font-bold text-slate-900">Recurring Billing Plans</h3>
+          <div class="space-y-3" id="plans-list">Loading plans...</div>
+          
+          <div class="pt-4 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-slate-700 mb-2 uppercase">Subscribe Customer</h4>
+            <input id="sub-email" class="light-input w-full p-2.5 rounded-xl text-xs mb-2" placeholder="customer@domain.com" value="subscriber@acme.com">
+            <button onclick="createSubscriber()" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs">
+              Create Active e-Mandate
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 light-card p-6 rounded-2xl">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Active Subscribers</h3>
+              <p class="text-xs text-slate-500">Auto-recurring billing cycle schedules</p>
+            </div>
+            <button onclick="triggerBillingCron()" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-bold text-xs border border-emerald-200">
+              ⚡ Run Billing Cron
+            </button>
+          </div>
+          <div id="subscribers-table">Loading subscribers...</div>
+        </div>
+      </div>
+        <div class="light-card p-6 rounded-2xl mt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">📡 Real-Time Global Telemetry Stream</h4>
+            <span class="text-[11px] font-mono text-emerald-600 font-bold flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Streaming 5 Nodes</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+                  <th class="pb-2">Timestamp</th>
+                  <th class="pb-2">Node / City</th>
+                  <th class="pb-2">Origin IP</th>
+                  <th class="pb-2">Latency</th>
+                  <th class="pb-2">Risk Tier</th>
+                  <th class="pb-2 text-right">Interceptor Action</th>
+                </tr>
+              </thead>
+              <tbody id="geo-telemetry-tbody" class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">Live Just Now</td><td class="py-2 font-bold text-slate-900">Dhaka, BD (BGD-01)</td><td class="py-2 text-slate-600">103.144.12.8</td><td class="py-2 text-emerald-600">38ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">2s ago</td><td class="py-2 font-bold text-slate-900">London, UK (LON-04)</td><td class="py-2 text-slate-600">185.220.101.5</td><td class="py-2 text-emerald-600">112ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">5s ago</td><td class="py-2 font-bold text-rose-700">Tor Exit / Proxy Node</td><td class="py-2 text-rose-600">45.154.255.99</td><td class="py-2 text-rose-600">340ms</td><td><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-bold text-[10px]">BLOCK</span></td><td class="py-2 text-right text-rose-600 font-bold">Auto-Drop</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">9s ago</td><td class="py-2 font-bold text-slate-900">New York, US (NYC-02)</td><td class="py-2 text-slate-600">198.51.100.42</td><td class="py-2 text-emerald-600">95ms</td><td><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CHALLENGE</span></td><td class="py-2 text-right text-amber-600 font-bold">3DS 2.0 OTP</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">14s ago</td><td class="py-2 font-bold text-slate-900">Singapore, SG (SIN-01)</td><td class="py-2 text-slate-600">203.0.113.195</td><td class="py-2 text-emerald-600">54ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 7: DISPUTES & CHARGEBACKS DEFENSE                          -->
+    <!-- ============================================================== -->
+    <div id="section-disputes" class="space-y-6 hidden">
+      <div class="light-card p-6 rounded-2xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Chargeback & Fraud Dispute Defense Center</h3>
+            <p class="text-xs text-slate-500">Contest Visa/Mastercard chargeback alerts (TC40/SAFE) and submit proof of delivery</p>
+          </div>
+          <button onclick="simulateNewDispute()" class="px-3.5 py-1.5 rounded-lg bg-rose-50 text-rose-700 font-bold text-xs border border-rose-200">
+            + Simulate Chargeback
+          </button>
+        </div>
+
+        <div id="disputes-list" class="space-y-3">Loading disputes...</div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 8: DOUBLE-ENTRY LEDGER                                     -->
+    <!-- ============================================================== -->
+    <div id="section-ledger" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="balance-cards"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 light-card rounded-2xl p-6">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">Immutable Double-Entry Journal</h3>
+              <p class="text-xs text-slate-500">Sum of Debits strictly equals Sum of Credits</p>
+            </div>
+            <div id="ledger-balance-status" class="text-xs font-mono font-bold px-2.5 py-1 rounded"></div>
+          </div>
+          <div class="overflow-x-auto max-h-96">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                  <th class="pb-2.5 font-bold">Type</th>
+                  <th class="pb-2.5 font-bold">Account Code</th>
+                  <th class="pb-2.5 font-bold text-right">Amount (INR)</th>
+                  <th class="pb-2.5 font-bold text-right">Time</th>
+                </tr>
+              </thead>
+              <tbody id="ledger-tbody" class="divide-y divide-slate-100 text-xs"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="lg:col-span-5 light-card rounded-2xl p-6">
+          <div class="mb-4 pb-3 border-b border-slate-100">
+            <h3 class="text-sm font-bold text-slate-900">T-Accounts Balance Aggregation</h3>
+          </div>
+          <div class="h-80 flex items-center justify-center">
+            <canvas id="ledger-chart"></canvas>
+          </div>
+        </div>
+      </div>
+        <div class="light-card p-6 rounded-2xl mt-6">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">📡 Real-Time Global Telemetry Stream</h4>
+            <span class="text-[11px] font-mono text-emerald-600 font-bold flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Streaming 5 Nodes</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-[11px] uppercase text-slate-500 border-b border-slate-200">
+                  <th class="pb-2">Timestamp</th>
+                  <th class="pb-2">Node / City</th>
+                  <th class="pb-2">Origin IP</th>
+                  <th class="pb-2">Latency</th>
+                  <th class="pb-2">Risk Tier</th>
+                  <th class="pb-2 text-right">Interceptor Action</th>
+                </tr>
+              </thead>
+              <tbody id="geo-telemetry-tbody" class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">Live Just Now</td><td class="py-2 font-bold text-slate-900">Dhaka, BD (BGD-01)</td><td class="py-2 text-slate-600">103.144.12.8</td><td class="py-2 text-emerald-600">38ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">2s ago</td><td class="py-2 font-bold text-slate-900">London, UK (LON-04)</td><td class="py-2 text-slate-600">185.220.101.5</td><td class="py-2 text-emerald-600">112ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">5s ago</td><td class="py-2 font-bold text-rose-700">Tor Exit / Proxy Node</td><td class="py-2 text-rose-600">45.154.255.99</td><td class="py-2 text-rose-600">340ms</td><td><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-bold text-[10px]">BLOCK</span></td><td class="py-2 text-right text-rose-600 font-bold">Auto-Drop</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">9s ago</td><td class="py-2 font-bold text-slate-900">New York, US (NYC-02)</td><td class="py-2 text-slate-600">198.51.100.42</td><td class="py-2 text-emerald-600">95ms</td><td><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold text-[10px]">CHALLENGE</span></td><td class="py-2 text-right text-amber-600 font-bold">3DS 2.0 OTP</td></tr>
+                <tr class="hover:bg-slate-50"><td class="py-2 text-slate-500">14s ago</td><td class="py-2 font-bold text-slate-900">Singapore, SG (SIN-01)</td><td class="py-2 text-slate-600">203.0.113.195</td><td class="py-2 text-emerald-600">54ms</td><td><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">ALLOW</span></td><td class="py-2 text-right text-emerald-600 font-bold">Direct Auth</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 9: WEBHOOK INSPECTOR                                      -->
+    <!-- ============================================================== -->
+    <div id="section-webhooks" class="space-y-6 hidden">
+      <div class="flex items-center justify-between light-card p-4 rounded-2xl">
+        <div class="flex items-center gap-3">
+          <div class="p-2 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Transactional Outbox Webhook Dispatcher</h3>
+            <p class="text-xs text-slate-500">Cryptographically signed HMAC-SHA256 headers with replay defense</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="dispatchWebhooks()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition shadow-sm">
+            Dispatch Pending
+          </button>
+          <button onclick="loadWebhooks()" class="px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold transition shadow-sm">
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="light-card rounded-2xl p-6">
+        <h3 class="text-sm font-bold text-slate-900 mb-4">Dispatched Webhook Outbox Queue</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                <th class="pb-2.5 font-bold">Event Type</th>
+                <th class="pb-2.5 font-bold">Status</th>
+                <th class="pb-2.5 font-bold text-center">Attempts</th>
+                <th class="pb-2.5 font-bold">Response</th>
+                <th class="pb-2.5 font-bold">Next Retry</th>
+                <th class="pb-2.5 font-bold text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="webhook-tbody" class="divide-y divide-slate-100 text-xs font-mono"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 10: BANK RECONCILIATION                                   -->
+    <!-- ============================================================== -->
+    <div id="section-recon" class="space-y-6 hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-6 light-card rounded-2xl p-6 space-y-4">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">End-of-Day Bank Statement Reconciliation</h3>
+            <p class="text-xs text-slate-500">Match gateway ledger vs bank clearing settlements</p>
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1.5">Settlement Date</label>
+            <input id="recon-date" type="date" class="light-input w-full px-3.5 py-2.5 rounded-xl text-sm font-mono text-slate-900 outline-none">
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="text-xs font-bold text-slate-700">Bank Settlement Batch (JSON)</label>
+              <button onclick="insertSampleReconData()" class="text-[11px] text-indigo-600 hover:text-indigo-700 font-bold underline">Insert Sample</button>
+            </div>
+            <textarea id="recon-input" rows="7" class="light-input w-full p-3 rounded-xl font-mono text-xs text-slate-800 outline-none"></textarea>
+          </div>
+          <button onclick="runReconciliation()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition">
+            Execute Automated Reconciliation
+          </button>
+        </div>
+        <div class="lg:col-span-6 light-card rounded-2xl p-6">
+          <h3 class="text-sm font-bold text-slate-900 mb-4">Reconciliation Discrepancy Matrix</h3>
+          <div id="recon-result">
+            <div class="flex flex-col items-center justify-center p-12 text-center text-slate-400">
+              <div class="text-xs text-slate-500">Run a reconciliation job to see matched records and gap discrepancies.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="light-card rounded-2xl p-6">
+        <h3 class="text-sm font-bold text-slate-900 mb-4">Past Reconciliation Reports</h3>
+        <div id="recon-reports">Loading archive...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    let currentPaymentMethod = 'card';
+    let currentTransactionId = null;
+    let tierChart = null;
+    let fraudChart = null;
+    let ledgerChart = null;
+
+    const ALL_TABS = ['checkout','routing','fraud','geomap','marketplace','subscriptions','disputes','ledger','webhooks','recon'];
+
+    function switchTab(tab) {
+      ALL_TABS.forEach(t => {
+        const sec = document.getElementById('section-' + t);
+        const tabBtn = document.getElementById('tab-' + t);
+        if (sec && tabBtn) {
+          sec.classList.add('hidden');
+          tabBtn.className = 'nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5';
+        }
+      });
+      const activeSec = document.getElementById('section-' + tab);
+      const activeTabBtn = document.getElementById('tab-' + tab);
+      if (activeSec && activeTabBtn) {
+        activeSec.classList.remove('hidden');
+        activeTabBtn.className = 'nav-tab active px-3 py-1.5 rounded-lg flex items-center gap-1.5';
+      }
+
+      if (tab === 'routing') loadGateways();
+      if (tab === 'fraud') loadFraudData();
+      if (tab === 'geomap') initGeoCanvas();
+      if (tab === 'marketplace') loadMarketplace();
+      if (tab === 'subscriptions') loadSubscriptions();
+      if (tab === 'disputes') loadDisputes();
+      if (tab === 'ledger') loadLedgerData();
+      if (tab === 'webhooks') loadWebhooks();
+      if (tab === 'recon') loadReconReports();
+    }
+
+    // 1. Checkout logic
+    function updateCardPreview() {
+      const num = document.getElementById('card-number').value.replace(/\s+/g, '');
+      const exp = document.getElementById('card-expiry').value;
+      const formattedNum = num.padEnd(16, '•').match(/.{1,4}/g)?.join(' ') || '•••• •••• •••• ••••';
+      document.getElementById('card-preview-number').textContent = formattedNum;
+      document.getElementById('card-preview-exp').textContent = exp || 'MM/YY';
+      
+      const brandEl = document.getElementById('card-brand-label');
+      if (num.startsWith('4')) brandEl.textContent = 'VISA';
+      else if (num.startsWith('5')) brandEl.textContent = 'MASTERCARD';
+      else if (num.startsWith('3')) brandEl.textContent = 'AMEX';
+      else if (num.startsWith('6')) brandEl.textContent = 'RUPAY';
+      else brandEl.textContent = 'CARD';
+    }
+
+    function setPaymentMethod(method) {
+      currentPaymentMethod = method;
+      if (method === 'card') {
+        document.getElementById('card-section').classList.remove('hidden');
+        document.getElementById('upi-section').classList.add('hidden');
+        document.getElementById('pm-card').className = 'flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm transition';
+        document.getElementById('pm-upi').className = 'flex-1 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+      } else {
+        document.getElementById('card-section').classList.add('hidden');
+        document.getElementById('upi-section').classList.remove('hidden');
+        document.getElementById('pm-card').className = 'flex-1 py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        document.getElementById('pm-upi').className = 'flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-900 shadow-sm transition';
+        generateUpiQR();
+      }
+    }
+
+    function setCard(num, exp, cvv) {
+      document.getElementById('card-number').value = num;
+      document.getElementById('card-expiry').value = exp;
+      document.getElementById('card-cvv').value = cvv;
+      updateCardPreview();
+      setPaymentMethod('card');
+    }
+
+    function generateUpiQR() {
+      const container = document.getElementById('upi-qr');
+      container.innerHTML = '';
+      const vpa = document.getElementById('upi-vpa').value || 'merchant@razorflow';
+      const amount = document.getElementById('amount-inr').value || '499';
+      const upiUrl = `upi://pay?pa=${vpa}&pn=RazorFlow&am=${amount}&cu=INR&tn=OrderPayment`;
+      new QRCode(container, { text: upiUrl, width: 140, height: 140, colorDark: '#0F172A', colorLight: '#FFFFFF' });
+    }
+
+    async function processPayment() {
+      const btn = document.getElementById('pay-btn');
+      const otpSection = document.getElementById('otp-section');
+      
+      if (!otpSection.classList.contains('hidden') && currentTransactionId) {
+        await captureWithOTP();
+        return;
+      }
+
+      btn.innerHTML = '<span class="spinner-sm"></span> <span>Running Sentinel Fraud Radar...</span>';
+      btn.disabled = true;
+
+      try {
+        const amountPaise = Math.round(parseFloat(document.getElementById('amount-inr').value) * 100);
+        
+        const orderRes = await fetch('/api/v1/orders/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+          body: JSON.stringify({
+            amount_paise: amountPaise,
+            currency: 'INR',
+            customer_email: document.getElementById('customer-email').value
+          })
+        });
+        const order = await orderRes.json();
+
+        const payloadBody = {
+          order_id: order.id,
+          payment_method: currentPaymentMethod,
+          ip_address: '127.0.0.1'
+        };
+        if (currentPaymentMethod === 'card') {
+          payloadBody.card = {
+            card_number: document.getElementById('card-number').value.replace(/\s+/g, ''),
+            card_expiry: document.getElementById('card-expiry').value,
+            card_cvv: document.getElementById('card-cvv').value
+          };
+        } else {
+          payloadBody.upi_vpa = document.getElementById('upi-vpa').value;
+        }
+
+        const initRes = await fetch('/api/v1/payments/initiate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payloadBody)
+        });
+        const initData = await initRes.json();
+        currentTransactionId = initData.transaction_id;
+
+        renderRiskScore(initData);
+
+        if (initData.risk_tier === 'BLOCK') {
+          renderTelemetry('✕', 'FRAUD REJECTED', initData.message, 'bg-rose-50 border-rose-200 text-rose-800', 'BLOCKED');
+          btn.innerHTML = 'Authorize & Capture Payment';
+          btn.disabled = false;
+          return;
+        }
+
+        if (initData.otp_required) {
+          otpSection.classList.remove('hidden');
+          document.getElementById('otp-hint').textContent = '🔐 Simulator Test OTP: ' + (initData.otp_code || 'Check console');
+          btn.innerHTML = 'Verify 3DS OTP & Capture';
+          btn.disabled = false;
+          renderTelemetry('▲', '3DS STEP-UP CHALLENGE', 'Issuer requires OTP authentication.', 'bg-amber-50 border-amber-200 text-amber-800', 'CHALLENGE');
+          return;
+        }
+
+        await capturePayment(currentTransactionId, null);
+
+      } catch (err) {
+        renderTelemetry('✕', 'TRANSACTION ERROR', err.message, 'bg-rose-50 border-rose-200 text-rose-800', 'ERROR');
+      } finally {
+        if (document.getElementById('otp-section').classList.contains('hidden')) {
+          btn.innerHTML = 'Authorize & Capture Payment';
+          btn.disabled = false;
+        }
+      }
+    }
+
+    async function captureWithOTP() {
+      const otp = document.getElementById('otp-input').value;
+      if (!otp || otp.length !== 6) {
+        alert('Please enter a valid 6-digit OTP code');
+        return;
+      }
+      await capturePayment(currentTransactionId, otp);
+      document.getElementById('otp-section').classList.add('hidden');
+      document.getElementById('otp-input').value = '';
+      document.getElementById('pay-btn').innerHTML = 'Authorize & Capture Payment';
+    }
+
+    async function capturePayment(transactionId, otp) {
+      const body = { transaction_id: transactionId };
+      if (otp) body.otp_code = otp;
+
+      const res = await fetch('/api/v1/payments/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (data.status === 'CAPTURED') {
+        renderTelemetry('✓', 'PAYMENT CAPTURED', `Bank Ref: ${data.bank_ref} • Amount: ₹${(data.amount_paise / 100).toFixed(2)}`, 'bg-emerald-50 border-emerald-200 text-emerald-800', 'CAPTURED');
+        document.getElementById('txn-details').classList.remove('hidden');
+        document.getElementById('txn-json').textContent = JSON.stringify(data, null, 2);
+      } else {
+        renderTelemetry('✕', data.status, data.message, 'bg-rose-50 border-rose-200 text-rose-800', data.status);
+      }
+      refreshAll();
+    }
+
+    function renderRiskScore(data) {
+      const score = data.risk_score || 0;
+      document.getElementById('risk-score-val').textContent = `${score} / 100 (${data.risk_tier})`;
+      const bar = document.getElementById('risk-bar');
+      bar.style.width = score + '%';
+      if (score < 30) bar.className = 'h-full rounded-full transition-all duration-500 bg-emerald-500';
+      else if (score < 70) bar.className = 'h-full rounded-full transition-all duration-500 bg-amber-500';
+      else bar.className = 'h-full rounded-full transition-all duration-500 bg-rose-500';
+    }
+
+    function renderTelemetry(icon, title, msg, boxClass, pillText) {
+      const box = document.getElementById('result-box');
+      box.className = `p-4 rounded-xl border text-center transition ${boxClass}`;
+      document.getElementById('result-icon').textContent = icon;
+      document.getElementById('result-title').textContent = title;
+      document.getElementById('result-msg').textContent = msg;
+      document.getElementById('telemetry-status-pill').textContent = pillText;
+    }
+
+    // 2. Smart Routing API
+    async function loadGateways() {
+      const res = await fetch('/api/v1/routing/gateways');
+      const gws = await res.json();
+      const grid = document.getElementById('gateways-grid');
+      grid.innerHTML = gws.map(g => {
+        const isHealthy = g.health_status === 'HEALTHY';
+        return `
+          <div class="light-card p-4 rounded-xl border ${isHealthy ? 'border-slate-200' : 'border-rose-300 bg-rose-50/50'}">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-slate-100">${g.code}</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isHealthy ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${g.health_status}</span>
+            </div>
+            <div class="text-xs font-bold text-slate-800">${g.name}</div>
+            <div class="text-[11px] text-slate-500 mt-2 space-y-0.5">
+              <div>Success Rate: <strong class="text-slate-800">${g.success_rate}%</strong></div>
+              <div>Fee: <strong class="text-slate-800">${g.fee_percent}%</strong> | Latency: <strong class="text-slate-800">${g.avg_latency_ms}ms</strong></div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-slate-100 flex gap-2">
+              <button onclick="toggleGatewayHealth('${g.code}', '${isHealthy ? 'DOWN' : 'HEALTHY'}')" class="flex-1 py-1 text-[10px] font-bold rounded ${isHealthy ? 'bg-rose-50 text-rose-700 hover:bg-rose-100' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'}">
+                ${isHealthy ? 'Simulate Outage (DOWN)' : 'Restore (HEALTHY)'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function toggleGatewayHealth(code, status) {
+      await fetch('/api/v1/routing/simulate-failover', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gateway_code: code, health_status: status })
+      });
+      loadGateways();
+    }
+
+    // 3. Fraud Radar
+    async function loadFraudData() {
+      const statsRes = await fetch('/api/v1/fraud/stats');
+      const s = await statsRes.json();
+      document.getElementById('fraud-allow-count').textContent = s.allow;
+      document.getElementById('fraud-challenge-count').textContent = s.challenge;
+      document.getElementById('fraud-block-count').textContent = s.block;
+
+      const rulesRes = await fetch('/api/v1/fraud/rules');
+      const data = await rulesRes.json();
+      document.getElementById('fraud-rules-list').innerHTML = data.rules.map(r => `
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div>
+            <div class="text-xs font-bold text-slate-900 font-mono">${r.name}</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">${r.description}</div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">+${r.score} pts</span>
+            ${r.threshold ? `<div class="text-[10px] text-slate-400 mt-0.5 font-mono">Limit: ${r.threshold}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      const ctx = document.getElementById('fraud-dist-chart')?.getContext('2d');
+      if (!ctx) return;
+      if (fraudChart) fraudChart.destroy();
+      fraudChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['ALLOW (Direct)', '3DS CHALLENGE', 'FRAUD BLOCK'],
+          datasets: [{
+            data: [s.allow, s.challenge, s.block],
+            backgroundColor: ['rgba(16,185,129,0.8)', 'rgba(245,158,11,0.8)', 'rgba(239,68,68,0.8)'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#64748B' }, grid: { display: false } },
+            y: { ticks: { color: '#64748B' }, grid: { color: '#F1F5F9' } }
+          }
+        }
+      });
+    }
+
+    // 4. Geo-Fraud Canvas Animation
+    let geoPings = [
+      { x: 260, y: 120, label: 'New York (CLEAN)', safe: true, r: 0 },
+      { x: 460, y: 95, label: 'London (CLEAN)', safe: true, r: 0 },
+      { x: 670, y: 165, label: 'Dhaka (3DS PASS)', safe: true, r: 0 },
+      { x: 720, y: 200, label: 'Singapore (CLEAN)', safe: true, r: 0 },
+      { x: 500, y: 170, label: 'Proxy Node (FRAUD BLOCK)', safe: false, r: 0 }
+    ];
+
+    function initGeoCanvas() {
+      const canvas = document.getElementById('geoCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function draw() {
+        ctx.fillStyle = '#0F172A';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Grid lines
+        ctx.strokeStyle = '#1E293B';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < canvas.width; i += 60) {
+          ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+        }
+        for (let j = 0; j < canvas.height; j += 60) {
+          ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+        }
+
+        // Draw animated pings
+        geoPings.forEach(p => {
+          p.r = (p.r + 0.5) % 30;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.strokeStyle = p.safe ? `rgba(52, 211, 153, ${1 - p.r/30})` : `rgba(248, 113, 113, ${1 - p.r/30})`;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = p.safe ? '#34D399' : '#F87171';
+          ctx.fill();
+
+          ctx.fillStyle = '#94A3B8';
+          ctx.font = '10px JetBrains Mono';
+          ctx.fillText(p.label, p.x + 8, p.y + 3);
+        });
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function generateGeoPing() {
+      const cities = [
+        { name: 'Tokyo (CLEAN)', safe: true, x: 790, y: 130 },
+        { name: 'Sydney (CLEAN)', safe: true, x: 810, y: 280 },
+        { name: 'TOR Exit IP (BLOCKED)', safe: false, x: 380, y: 220 }
+      ];
+      const picked = cities[Math.floor(Math.random() * cities.length)];
+      geoPings.push({ x: picked.x, y: picked.y, label: picked.name, safe: picked.safe, r: 0 });
+      if (geoPings.length > 8) geoPings.shift();
+    }
+
+    // 5. Marketplace Splits
+    async function loadMarketplace() {
+      const res = await fetch('/api/v1/marketplace/vendors');
+      const vendors = await res.json();
+      
+      document.getElementById('vendors-list').innerHTML = vendors.map(v => `
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+          <div>
+            <div class="text-xs font-bold text-slate-900">${v.name}</div>
+            <div class="text-[11px] text-slate-500 font-mono">${v.email} • A/C: ${v.bank_account}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-bold font-mono text-emerald-700">₹${v.balance_inr.toFixed(2)}</div>
+            <div class="text-[10px] text-slate-400">Commission: ${v.commission_rate}%</div>
+          </div>
+        </div>
+      `).join('');
+
+      const sel = document.getElementById('payout-vendor-select');
+      sel.innerHTML = vendors.map(v => `<option value="${v.id}">${v.name} (Bal: ₹${v.balance_inr})</option>`).join('');
+    }
+
+    async function executeVendorPayout() {
+      const vendorId = document.getElementById('payout-vendor-select').value;
+      const amountPaise = document.getElementById('payout-amount').value;
+      const res = await fetch(`/api/v1/marketplace/payout/${vendorId}?amount_paise=${amountPaise}`, { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('payout-result').textContent = JSON.stringify(data, null, 2);
+      loadMarketplace();
+    }
+
+    // 6. Subscriptions
+    async function loadSubscriptions() {
+      const plansRes = await fetch('/api/v1/subscriptions/plans');
+      const plans = await plansRes.json();
+      document.getElementById('plans-list').innerHTML = plans.map(p => `
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+          <div>
+            <div class="text-xs font-bold text-slate-900">${p.name}</div>
+            <div class="text-[10px] uppercase font-bold text-indigo-600">${p.interval}</div>
+          </div>
+          <div class="text-sm font-bold font-mono text-slate-900">₹${p.amount_inr}</div>
+        </div>
+      `).join('');
+
+      const subsRes = await fetch('/api/v1/subscriptions/');
+      const subs = await subsRes.json();
+      document.getElementById('subscribers-table').innerHTML = subs.length ? subs.map(s => `
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 mb-2 flex justify-between items-center text-xs">
+          <div>
+            <strong class="text-slate-900">${s.customer_email}</strong>
+            <div class="text-slate-500 font-mono text-[11px]">${s.plan_name} • ₹${s.amount_inr}</div>
+          </div>
+          <div class="text-right">
+            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px]">${s.status}</span>
+            <div class="text-[10px] text-slate-400 font-mono mt-0.5">Next: ${new Date(s.next_billing_at).toLocaleDateString()}</div>
+          </div>
+        </div>
+      `).join('') : '<div class="text-xs text-slate-400 py-4 text-center">No active subscribers yet.</div>';
+    }
+
+    async function createSubscriber() {
+      const plansRes = await fetch('/api/v1/subscriptions/plans');
+      const plans = await plansRes.json();
+      const email = document.getElementById('sub-email').value;
+      await fetch('/api/v1/subscriptions/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan_id: plans[0].id, customer_email: email })
+      });
+      loadSubscriptions();
+    }
+
+    async function triggerBillingCron() {
+      const res = await fetch('/api/v1/subscriptions/trigger-billing-cron', { method: 'POST' });
+      const data = await res.json();
+      alert(`Cron Executed! Charged ${data.charged_count} due subscriptions.`);
+      loadSubscriptions();
+    }
+
+    // 7. Disputes
+    async function loadDisputes() {
+      const res = await fetch('/api/v1/disputes/');
+      const disputes = await res.json();
+      document.getElementById('disputes-list').innerHTML = disputes.length ? disputes.map(d => `
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-700 font-bold text-[10px]">${d.status}</span>
+              <span class="text-xs font-bold text-slate-900 font-mono">${d.reason}</span>
+            </div>
+            <div class="text-xs text-slate-500 font-mono mt-1">Txn: ${d.transaction_id.slice(0,8)}... • Due: ${new Date(d.due_date).toLocaleDateString()}</div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-sm font-bold font-mono text-rose-700">₹${d.amount_inr}</div>
+            ${d.status === 'NEEDS_RESPONSE' ? `
+              <button onclick="contestDispute('${d.id}')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold">
+                Submit Evidence
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `).join('') : '<div class="text-xs text-slate-400 py-6 text-center">No active dispute chargebacks.</div>';
+    }
+
+    async function simulateNewDispute() {
+      const entriesRes = await fetch('/api/v1/ledger/entries?limit=1');
+      const entries = await entriesRes.json();
+      if (!entries.length) return alert('Run a transaction first');
+      await fetch('/api/v1/disputes/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transaction_id: entries[0].transaction_id, reason: 'UNRECOGNIZED_TRANSACTION_ALERT' })
+      });
+      loadDisputes();
+    }
+
+    async function contestDispute(id) {
+      const proof = prompt('Enter Delivery Tracking ID or Proof of Invoice:', 'DHL-EXPRESS-TRACK-998822');
+      if (!proof) return;
+      await fetch('/api/v1/disputes/evidence', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dispute_id: id, evidence_text: proof })
+      });
+      loadDisputes();
+    }
+
+    // 8. Ledger, Webhooks, Reconciliation
+    async function loadLedgerData() {
+      const res = await fetch('/api/v1/ledger/balance-sheet');
+      const data = await res.json();
+      
+      const cards = document.getElementById('balance-cards');
+      const accountIcons = {
+        'ACQUIRER_CLEARING': { label: 'Bank Acquirer Clearing', color: 'text-indigo-700', border: 'border-l-indigo-500' },
+        'MERCHANT_PAYABLE': { label: 'Merchant Settlement Payable', color: 'text-emerald-700', border: 'border-l-emerald-500' },
+        'GATEWAY_FEE_REVENUE': { label: 'RazorFlow Fee Revenue (2%)', color: 'text-amber-700', border: 'border-l-amber-500' },
+        'FRAUD_HOLD': { label: 'Fraud Hold Escrow', color: 'text-rose-700', border: 'border-l-rose-500' }
+      };
+
+      cards.innerHTML = Object.entries(data.accounts).map(([code, acc]) => {
+        const meta = accountIcons[code] || { label: code, color: 'text-slate-800', border: 'border-l-slate-400' };
+        return `
+          <div class="light-card p-5 rounded-2xl border-l-4 ${meta.border}">
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">${meta.label}</div>
+            <div class="text-xl font-extrabold font-mono ${meta.color} mt-1">₹${(Math.abs(acc.net_paise) / 100).toFixed(2)}</div>
+            <div class="text-[10px] font-mono text-slate-400 mt-2 flex justify-between">
+              <span>Dr: ₹${(acc.debit_total / 100).toFixed(2)}</span>
+              <span>Cr: ₹${(acc.credit_total / 100).toFixed(2)}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('ledger-balance-status').textContent = data.is_balanced ? '✓ EQUALITY VERIFIED: Σ(Dr) == Σ(Cr)' : '✕ UNBALANCED';
+      document.getElementById('ledger-balance-status').className = data.is_balanced ? 'text-xs font-mono font-bold px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 border border-emerald-200' : 'text-xs font-mono font-bold px-2.5 py-1 rounded bg-rose-50 text-rose-700';
+
+      const entriesRes = await fetch('/api/v1/ledger/entries?limit=30');
+      const entries = await entriesRes.json();
+      document.getElementById('ledger-tbody').innerHTML = entries.map(e => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 font-bold ${e.entry_type === 'DEBIT' ? 'text-rose-600' : 'text-emerald-600'}">${e.entry_type}</td>
+          <td class="py-2.5 text-slate-700 font-mono">${e.account_code}</td>
+          <td class="py-2.5 text-right font-mono font-bold text-slate-900">₹${e.amount_inr.toFixed(2)}</td>
+          <td class="py-2.5 text-right text-slate-500 font-mono">${new Date(e.created_at).toLocaleTimeString()}</td>
+        </tr>
+      `).join('');
+
+      const labels = Object.keys(data.accounts);
+      const debits = labels.map(l => data.accounts[l].debit_total / 100);
+      const credits = labels.map(l => data.accounts[l].credit_total / 100);
+
+      const ctx = document.getElementById('ledger-chart')?.getContext('2d');
+      if (!ctx) return;
+      if (ledgerChart) ledgerChart.destroy();
+      ledgerChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels.map(l => l.replace(/_/g, ' ')),
+          datasets: [
+            { label: 'Debit (Dr)', data: debits, backgroundColor: 'rgba(239,68,68,0.8)', borderRadius: 4 },
+            { label: 'Credit (Cr)', data: credits, backgroundColor: 'rgba(16,185,129,0.8)', borderRadius: 4 }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    async function loadWebhooks() {
+      const res = await fetch('/api/v1/webhooks/events?limit=30');
+      const events = await res.json();
+      document.getElementById('webhook-tbody').innerHTML = events.map(e => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 text-slate-900 font-bold">${e.event_type}</td>
+          <td class="py-2.5"><span class="badge-allow text-[10px] px-2 py-0.5 rounded font-bold">${e.status}</span></td>
+          <td class="py-2.5 text-center text-slate-700 font-bold">${e.attempts}</td>
+          <td class="py-2.5 text-slate-500">${e.response_code || '—'}</td>
+          <td class="py-2.5 text-slate-500">${e.next_retry_at ? new Date(e.next_retry_at).toLocaleTimeString() : '—'}</td>
+          <td class="py-2.5 text-right">
+            ${e.status === 'DLQ' ? `<button onclick="replayDLQ('${e.id}')" class="px-2.5 py-1 rounded bg-rose-600 text-white text-[10px] font-bold">Replay</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function dispatchWebhooks() {
+      await fetch('/api/v1/webhooks/simulate-dispatch', { method: 'POST' });
+      loadWebhooks();
+    }
+
+    function insertSampleReconData() {
+      document.getElementById('recon-input').value = JSON.stringify([
+        { "bank_ref": "BNK-SAMPLE01", "amount_paise": 49900, "date": new Date().toISOString().split('T')[0] },
+        { "bank_ref": "BNK-DISCREPANCY", "amount_paise": 45000, "date": new Date().toISOString().split('T')[0] }
+      ], null, 2);
+    }
+
+    async function runReconciliation() {
+      const date = document.getElementById('recon-date').value;
+      const rawInput = document.getElementById('recon-input').value;
+      const res = await fetch('/api/v1/reconciliation/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ settlement_date: date, bank_rows: JSON.parse(rawInput) })
+      });
+      const data = await res.json();
+      document.getElementById('recon-result').innerHTML = `
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+            <div class="text-2xl font-extrabold text-emerald-800 font-mono">${data.total_matched}</div>
+            <div class="text-xs font-bold text-emerald-600 uppercase mt-0.5">Matched Records</div>
+          </div>
+          <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-center">
+            <div class="text-2xl font-extrabold text-rose-800 font-mono">${data.total_discrepancies}</div>
+            <div class="text-xs font-bold text-rose-600 uppercase mt-0.5">Discrepancies</div>
+          </div>
+        </div>
+      `;
+      loadReconReports();
+    }
+
+    async function loadReconReports() {
+      const res = await fetch('/api/v1/reconciliation/reports');
+      const reports = await res.json();
+      document.getElementById('recon-reports').innerHTML = reports.map(r => `
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 mb-2 flex justify-between items-center text-xs font-mono">
+          <span>${r.batch_date} • ${r.total_transactions} txns</span>
+          <span class="text-emerald-700 font-bold">${r.total_matched} Matched / ${r.total_discrepancies} Gaps</span>
+        </div>
+      `).join('');
+    }
+
+    // Refresh KPI telemetry
+    async function refreshAll() {
+      try {
+        const res = await fetch('/api/v1/fraud/stats');
+        const stats = await res.json();
+        document.getElementById('kpi-allow-count').textContent = stats.allow || 0;
+        document.getElementById('kpi-challenge-count').textContent = stats.challenge || 0;
+        document.getElementById('kpi-block-count').textContent = stats.block || 0;
+        document.getElementById('kpi-block-rate').textContent = `${stats.blocked_rate} Fraud Block Rate`;
+
+        const ctx = document.getElementById('tier-chart')?.getContext('2d');
+        if (ctx) {
+          if (tierChart) tierChart.destroy();
+          tierChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: ['ALLOW (Direct)', '3DS CHALLENGE', 'FRAUD BLOCK'],
+              datasets: [{
+                data: [stats.allow || 1, stats.challenge || 0, stats.block || 0],
+                backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+          });
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener('load', () => {
+      refreshAll();
+      updateCardPreview();
+      document.getElementById('recon-date').value = new Date().toISOString().split('T')[0];
+      insertSampleReconData();
+    });
+  </script>
+</body>
+</html>
