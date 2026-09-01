@@ -77,134 +77,174 @@
   </script>
 
     <style>
-    /* === SHUROKKHA — Mint Green + Sky Blue Premium Light Theme === */
-
-    /* Base */
-    body {
-      background-color: #F0FDF9;
-      background-image:
-        radial-gradient(ellipse at 70% 0%, rgba(6,182,212,0.09) 0%, transparent 55%),
-        radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.07) 0%, transparent 50%);
-      color: #134E4A;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    /* === SHUROKKHA BESPOKE FINTECH LIGHT SUITE === */
+    :root {
+      --primary-mint: #10B981;
+      --primary-cyan: #06B6D4;
+      --primary-teal: #0F766E;
+      --bg-ice: #F0FDF9;
     }
 
-    /* Cards */
+    body {
+      background-color: #F4FBF9;
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Living Ambient Background Mesh Canvas */
+    #bg-mesh-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Floating Ambient Gradient Orbs */
+    .ambient-orb {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 18s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(6, 182, 212, 0.12); top: -100px; right: -50px; }
+    .orb-2 { width: 600px; height: 600px; background: rgba(16, 185, 129, 0.10); bottom: -150px; left: -100px; animation-duration: 24s; }
+    .orb-3 { width: 400px; height: 400px; background: rgba(99, 102, 241, 0.06); top: 40%; left: 30%; animation-duration: 20s; }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.08); }
+      100% { transform: translate(-30px, 40px) scale(0.95); }
+    }
+
+    /* Bespoke Glass Cards with Hairline Highlighting */
     .light-card {
-      background: #FFFFFF;
-      border: 1px solid #D1FAE5;
-      box-shadow: 0 1px 4px rgba(6,182,212,0.07), 0 1px 2px rgba(16,185,129,0.04);
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(16, 185, 129, 0.16);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        0 4px 20px -2px rgba(15, 118, 110, 0.05),
+        0 1px 3px rgba(0, 0, 0, 0.02);
+      border-radius: 1.25rem;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .light-card:hover {
-      border-color: #6EE7B7;
-      box-shadow: 0 4px 20px rgba(6,182,212,0.11), 0 2px 8px rgba(16,185,129,0.07);
+      border-color: rgba(6, 182, 212, 0.38);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 12px 32px -4px rgba(6, 182, 212, 0.12),
+        0 4px 12px rgba(16, 185, 129, 0.06);
+      transform: translateY(-2px);
     }
-    .light-card-elevated {
-      background: #FFFFFF;
-      border: 1px solid #CFFAFE;
-      box-shadow: 0 4px 24px -4px rgba(6,182,212,0.15), 0 2px 8px rgba(16,185,129,0.07);
+
+    /* Live Activity Marquee Ticker */
+    .ticker-wrap {
+      overflow: hidden;
+      white-space: nowrap;
+      background: linear-gradient(90deg, #ECFDF5 0%, #E0F2FE 50%, #ECFDF5 100%);
+      border-bottom: 1px solid rgba(110, 231, 183, 0.4);
+    }
+    .ticker-content {
+      display: inline-block;
+      animation: ticker 32s linear infinite;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     /* Inputs */
     .light-input {
-      background: #F0FDFA;
-      border: 1.5px solid #A7F3D0;
-      color: #134E4A;
+      background: rgba(240, 253, 250, 0.7);
+      border: 1.5px solid rgba(167, 243, 208, 0.8);
+      color: #0F172A;
+      font-weight: 500;
       transition: all 0.18s ease;
     }
     .light-input:focus {
       background: #FFFFFF;
       border-color: #06B6D4;
-      box-shadow: 0 0 0 3px rgba(6,182,212,0.13);
+      box-shadow: 0 0 0 3.5px rgba(6, 182, 212, 0.16);
       outline: none;
     }
-    .light-input::placeholder { color: #6EE7B7; }
 
-    /* Nav Tabs */
-    .nav-tab {
-      transition: all 0.15s ease;
-      color: #64748B;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .nav-tab:hover { color: #0F766E; background: #F0FDF9; }
-    .nav-tab.active {
-      color: #0E7490;
-      background: linear-gradient(135deg, #ECFDF5, #CFFAFE);
-      border: 1px solid #6EE7B7;
-      font-weight: 700;
-    }
-
-    /* Shield Logo — Glassmorphism Mint+Cyan */
-    .shield-logo {
-      background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
-      box-shadow: 0 4px 16px rgba(6,182,212,0.35), 0 0 0 2px rgba(255,255,255,0.5) inset;
-    }
-
-    /* Bank card preview — deep teal premium */
-    .credit-card-preview {
-      background: linear-gradient(135deg, #042f2e 0%, #065f46 55%, #0e7490 100%);
-      box-shadow: 0 20px 40px -6px rgba(6,182,212,0.38), 0 4px 12px rgba(16,185,129,0.22);
-      border: 1px solid rgba(110,231,183,0.22);
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #A7F3D0; border-radius: 6px; }
-    ::-webkit-scrollbar-thumb:hover { background: #34D399; }
-
-    /* Risk Badges */
-    .badge-allow     { background: #ECFDF5; color: #065F46; border: 1px solid #6EE7B7; font-weight: 700; }
-    .badge-challenge { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; }
-    .badge-block     { background: #FFF1F2; color: #9F1239; border: 1px solid #FECDD3; font-weight: 700; }
-
-    /* Spinner */
-    .spinner-sm {
-      border: 2px solid #D1FAE5;
-      border-top-color: #06B6D4;
-      border-radius: 50%;
-      width: 15px; height: 15px;
-      animation: spin 0.55s linear infinite;
-      flex-shrink: 0;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Dividers */
-    hr, .border-b { border-color: #ECFDF5; }
-
-    /* Table hover */
-    tbody tr:hover td { background: #F0FDFA; transition: background 0.1s ease; }
-
-    /* Primary button — Mint to Cyan gradient glow */
+    /* Primary Mint-to-Cyan Button with Glow */
     .btn-mint {
-      background: linear-gradient(135deg, #10B981, #06B6D4);
+      background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
       color: #FFFFFF;
       font-weight: 700;
       letter-spacing: 0.02em;
-      box-shadow: 0 4px 14px rgba(6,182,212,0.32);
-      transition: all 0.15s ease;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-mint:hover {
-      box-shadow: 0 6px 22px rgba(6,182,212,0.46);
-      transform: translateY(-1px);
+      box-shadow: 0 8px 26px rgba(6, 182, 212, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transform: translateY(-1.5px) scale(1.005);
     }
     .btn-mint:active { transform: scale(0.985); }
 
-    /* Soft glow pill badge for "Enterprise" */
-    .enterprise-pill {
-      background: linear-gradient(135deg, #ECFDF5, #CFFAFE);
+    /* Luxury Credit Card */
+    .credit-card-preview {
+      background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #083344 100%);
+      box-shadow: 0 24px 48px -8px rgba(6, 182, 212, 0.35), 0 8px 16px rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(110, 231, 183, 0.28);
+    }
+
+    /* Tab Switcher Pills */
+    .nav-tab {
+      transition: all 0.18s ease;
+      color: #475569;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .nav-tab:hover {
+      color: #0F766E;
+      background: rgba(240, 253, 250, 0.9);
+    }
+    .nav-tab.active {
       color: #0E7490;
-      border: 1px solid #6EE7B7;
-      font-size: 10px;
+      background: linear-gradient(135deg, #ECFDF5 0%, #CFFAFE 100%);
+      border: 1px solid #5EEAD4;
+      box-shadow: 0 2px 8px rgba(6, 182, 212, 0.12);
       font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased" style="background-color:#F0FDF9">
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- Interactive Particle Mesh Canvas & Ambient Orbs -->
+  <canvas id="bg-mesh-canvas"></canvas>
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+
+  <!-- Real-Time Infrastructure Ticker -->
+  <div class="ticker-wrap py-1.5 px-4 text-[11px] font-mono font-semibold text-teal-900 flex items-center justify-between z-40 relative">
+    <div class="ticker-content space-x-8">
+      <span>🟢 <strong class="text-emerald-700">Live Uptime: 99.998%</strong></span>
+      <span>⚡ <strong class="text-teal-700">Average Switch Latency: 38ms</strong></span>
+      <span>🛡️ <strong class="text-teal-800">Sentinel AI Radar: Scanning 120 Nodes/s</strong></span>
+      <span>🔐 <strong class="text-emerald-800">AES-256 Vault: PCI-DSS Level 1 Enclave</strong></span>
+      <span>🏛️ <strong class="text-teal-800">Auto-Cascade Switch: HDFC ⇄ ICICI ⇄ Stripe ⇄ Chase</strong></span>
+      <span>📒 <strong class="text-emerald-800">Double-Entry Ledger: 100% Mathematically Balanced</strong></span>
+      <!-- Repeated for seamless loop -->
+      <span>🟢 <strong class="text-emerald-700">Live Uptime: 99.998%</strong></span>
+      <span>⚡ <strong class="text-teal-700">Average Switch Latency: 38ms</strong></span>
+      <span>🛡️ <strong class="text-teal-800">Sentinel AI Radar: Scanning 120 Nodes/s</strong></span>
+      <span>🔐 <strong class="text-emerald-800">AES-256 Vault: PCI-DSS Level 1 Enclave</strong></span>
+      <span>🏛️ <strong class="text-teal-800">Auto-Cascade Switch: HDFC ⇄ ICICI ⇄ Stripe ⇄ Chase</strong></span>
+    </div>
+  </div>
 
   <!-- TOP APP BAR -->
   <header class="border-b border-teal-100 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
@@ -1720,5 +1760,99 @@
       </div>
     </div>
   </div>
+<script>
+
+    // Living Interactive Mesh Background Script
+    (function initBackgroundCanvas() {
+      const canvas = document.getElementById('bg-mesh-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h;
+      let mouse = { x: null, y: null, radius: 160 };
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      // Nodes
+      const nodeCount = Math.floor((window.innerWidth * window.innerHeight) / 18000);
+      const nodes = [];
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          r: Math.random() * 2 + 1.2,
+          color: Math.random() > 0.4 ? 'rgba(16, 185, 129, ' : 'rgba(6, 182, 212, '
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw connections
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 130) {
+              const alpha = (1 - dist / 130) * 0.22;
+              ctx.strokeStyle = `rgba(6, 182, 212, ${alpha})`;
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw and update nodes
+        nodes.forEach(n => {
+          n.x += n.vx;
+          n.y += n.vy;
+
+          if (n.x < 0 || n.x > w) n.vx *= -1;
+          if (n.y < 0 || n.y > h) n.vy *= -1;
+
+          // Mouse interaction (gentle repel)
+          if (mouse.x !== null) {
+            const dx = n.x - mouse.x;
+            const dy = n.y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.radius) {
+              const force = (1 - dist / mouse.radius) * 1.5;
+              n.x += (dx / dist) * force;
+              n.y += (dy / dist) * force;
+            }
+          }
+
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = n.color + '0.6)';
+          ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+</script>
 </body>
 </html>
