@@ -11,6 +11,68 @@
 
 ---
 
+## 📸 Interactive Showcase & Visual Tour
+
+### 1. 💳 Checkout Simulator & Interactive Presets
+Real-time card tokenization with AES-256-GCM vault, instant UPI Dynamic QR, and live transaction risk telemetry.
+![Checkout Simulator](docs/assets/01_checkout_simulator.png)
+
+---
+
+### 2. ⚡ Smart Multi-Acquirer Router & Auto-Cascade Switch
+Dynamic cost & health-based traffic routing across **HDFC, ICICI, Stripe, and Chase** with automated zero-downtime failover.
+![Smart Routing & Auto-Cascade](docs/assets/02_smart_routing_switch.png)
+
+---
+
+### 3. 🛡 Sentinel AI Fraud Radar & Decision Matrix
+7 heuristic velocity/anomaly rules combined with a trained `GradientBoosting` ML classifier (`ALLOW`, `3DS CHALLENGE`, `BLOCK`).
+![Sentinel Fraud Radar](docs/assets/03_sentinel_fraud_radar.png)
+
+---
+
+### 4. 🌍 Global Real-Time Geo-Fraud Heatmap & Telemetry
+Live HTML5 canvas radar tracking global transaction origins, Tor/Proxy anomalies, and impossible travel speeds.
+![Geo Heatmap](docs/assets/04_geo_heatmap.png)
+
+---
+
+### 5. 🏪 Marketplace Split Payments & Instant Payouts (Stripe Connect Style)
+Multi-vendor order splitting, platform commission deduction, and instant merchant bank payouts.
+![Marketplace Splits](docs/assets/05_marketplace_splits.png)
+
+---
+
+### 6. 🔄 Recurring Subscriptions & UPI AutoPay Studio
+Subscription plan management, customer e-Mandate registration, and automated recurring billing cron.
+![Subscriptions & AutoPay](docs/assets/06_subscriptions_autopay.png)
+
+---
+
+### 7. 📒 Double-Entry Bookkeeping Ledger
+Strict immutable T-accounts journal (`ACQUIRER_CLEARING`, `MERCHANT_PAYABLE`, `GATEWAY_FEE_REVENUE`, `FRAUD_HOLD`) verifying $\sum 	ext{Dr} = \sum 	ext{Cr}$.
+![Double-Entry Ledger](docs/assets/07_double_entry_ledger.png)
+
+---
+
+### 8. 🔔 Transactional Outbox Webhook Dispatcher
+HMAC-SHA256 cryptographically signed webhook delivery with anti-replay timestamps and Dead Letter Queue (DLQ) replay.
+![Webhook Dispatcher](docs/assets/08_webhook_dispatcher.png)
+
+---
+
+### 9. 🔍 Automated End-of-Day Bank Statement Reconciliation
+4-way automated clearing reconciliation classifying bank batches into `MATCHED`, `AMOUNT_MISMATCH`, and `MISSING_IN_BANK`.
+![Bank Reconciliation](docs/assets/09_bank_reconciliation.png)
+
+---
+
+### 10. 📖 Interactive OpenAPI Swagger Documentation
+Over 25+ production REST endpoints organized across 10 modular controllers.
+![OpenAPI Swagger Docs](docs/assets/10_swagger_api_docs.png)
+
+---
+
 ## 🏛 System Architecture & Workflow
 
 ```
@@ -63,71 +125,6 @@
 
 ---
 
-## 🚀 10 Enterprise FinTech Modules
-
-### 1. 💳 Core Payment Orchestration Engine
-- Full payment state machine (`CREATED` ➔ `PROCESSING` ➔ `RISK_EVALUATED` ➔ `3DS_PENDING` / `AUTHORIZED` ➔ `CAPTURED` ➔ `REFUNDED` / `BLOCKED`).
-- Card Vault with **AES-256-GCM** encryption for PANs, masking (`411111######1111`), BIN extraction, and brand detection (Visa, Mastercard, Amex, Rupay).
-- Instant **Dynamic UPI QR** generator with ISO standard string parsing.
-
-### 2. ⚡ Smart Multi-Acquirer Router & Auto-Cascade Switch (Juspay Hyperswitch)
-- Dynamic traffic routing across **HDFC SmartGateway, ICICI Bank Core, Stripe Global, and Chase Paymentech**.
-- **Auto-Cascade Fallback**: When an acquirer encounters latency spikes or `BANK_TIMEOUT`, the engine automatically re-routes the transaction to a healthy secondary bank without dropping the customer.
-
-### 3. 🛡 Sentinel AI Fraud Radar
-- **7 Real-Time Heuristic Rules**:
-  1. `velocity_1min`: Max transactions per minute from IP (>3)
-  2. `velocity_1hr`: Max transactions per hour from card BIN (>10)
-  3. `amount_spike`: Amount spike multiplier vs 30-day average (>5x)
-  4. `impossible_travel`: Distance >= 500 km under 30 minutes
-  5. `high_risk_bin`: Stolen / leaked card registry match
-  6. `proxy_ip`: Known VPN/Proxy/Tor exit node match
-  7. `odd_hour`: High-risk time window (2am–4am UTC)
-- **Trained Machine Learning Classifier**: Scikit-Learn `GradientBoostingClassifier` evaluated on multi-dimensional feature vectors.
-- **Dynamic Decision Matrix**:
-  - `ALLOW` (Score < 30): Zero-latency direct authorization.
-  - `CHALLENGE` (Score 30-69): Step-up 3D-Secure 2.0 biometric/OTP verification.
-  - `BLOCK` (Score >= 70): Auto-rejection preventing stolen card fraud.
-
-### 4. 🌍 Global Real-Time Geo-Fraud Heatmap & Telemetry
-- Animated HTML5 canvas radar rendering transaction origin nodes (Dhaka, London, New York, Singapore, Proxy nodes).
-- Live intercept stream displaying IP, latency, geographic coordinates, and risk tier.
-
-### 5. 🏪 Marketplace Split Payments & Instant Payouts (Stripe Connect / Razorpay Route)
-- Dynamic checkout splitting across multiple sub-merchants / vendors.
-- Automated platform commission fee deduction.
-- Instant merchant wallet payouts to virtual bank accounts.
-
-### 6. 🔄 Recurring Subscriptions & UPI AutoPay Engine
-- Monthly and annual recurring billing tiers with e-Mandate registration.
-- Automated billing cycle advancement and pre-debit notifications.
-- Dunning retry manager for failed subscription renewals.
-
-### 7. ⚖️ Disputes, Chargebacks & TC40/SAFE Defense Center
-- Visa/Mastercard chargeback alerts and issuer fraud notifications.
-- Automatic escrow hold placing disputed funds in `FRAUD_HOLD`.
-- Evidence submission portal (proof of delivery, invoice tracking) to win chargeback representments.
-
-### 8. 📒 Double-Entry Bookkeeping Ledger
-- Strict immutable T-account journal:
-  - `ACQUIRER_CLEARING` (Asset)
-  - `MERCHANT_PAYABLE` (Liability)
-  - `GATEWAY_FEE_REVENUE` (Revenue - 2%)
-  - `FRAUD_HOLD` (Escrow Liability)
-- Automated verification asserting that `Sum(Debits) == Sum(Credits)` on every transaction.
-
-### 9. 🔔 Transactional Outbox Webhook Dispatcher
-- Cryptographically signed with **HMAC-SHA256** (`t={timestamp},v1={hash}`).
-- Anti-replay attack timestamp window defense (300s).
-- Autonomous background worker thread with exponential backoff retries (`5s`, `30s`, `2m`, `10m`), Dead Letter Queue (DLQ), and manual replay endpoints.
-
-### 10. 🔍 Automated End-of-Day Bank Reconciliation
-- Ingests bank clearing settlement batches (JSON / CSV).
-- Automated 4-way matching against gateway ledger.
-- Classifies records into: `MATCHED`, `AMOUNT_MISMATCH`, `MISSING_IN_BANK`, and `EXTRA_IN_BANK`.
-
----
-
 ## 🛠 Tech Stack
 
 | Component | Technology | Purpose |
@@ -136,7 +133,7 @@
 | **Database & ORM** | [SQLAlchemy 2.0](https://www.sqlalchemy.org/) + SQLite WAL | Synchronous ACID transactions with Write-Ahead Logging |
 | **Machine Learning** | [Scikit-Learn](https://scikit-learn.org/) + [Joblib](https://joblib.readthedocs.io/) | GradientBoosting fraud probability model |
 | **Cryptography** | [Cryptography (AESGCM)](https://cryptography.io/) + `hmac` | AES-256-GCM card tokenization & HMAC-SHA256 signatures |
-| **Frontend UI** | Modern Vanilla JS + [Tailwind CSS](https://tailwindcss.com/) + [Chart.js](https://www.chartjs.org/) + [QRCode.js](https://davidshimjs.github.io/qrcodejs/) | Clean SaaS Light Mode Dashboard (No build tool needed) |
+| **Frontend UI** | Modern Vanilla JS + [Tailwind CSS](https://tailwindcss.com/) + [Chart.js](https://www.chartjs.org/) + [QRCode.js](https://davidshimjs.github.io/qrcodejs/) | Clean SaaS Light Mode Dashboard (Zero build tools needed) |
 
 ---
 
@@ -190,45 +187,31 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 ```
 razorflow-gateway/
+├── docs/
+│   └── assets/                     # High-resolution UI screenshots & diagrams
+│       ├── 01_checkout_simulator.png
+│       ├── 02_smart_routing_switch.png
+│       ├── 03_sentinel_fraud_radar.png
+│       ├── 04_geo_heatmap.png
+│       ├── 05_marketplace_splits.png
+│       ├── 06_subscriptions_autopay.png
+│       ├── 07_double_entry_ledger.png
+│       ├── 08_webhook_dispatcher.png
+│       ├── 09_bank_reconciliation.png
+│       └── 10_swagger_api_docs.png
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/
-│   │   │   ├── orders.py           # Order creation & idempotency
-│   │   │   ├── payments.py         # Initiation, 3DS & capture
-│   │   │   ├── fraud.py            # Fraud radar & heuristic stats
-│   │   │   ├── router_api.py       # Smart routing & failover switch
-│   │   │   ├── marketplace.py      # Marketplace splits & payouts
-│   │   │   ├── subscriptions.py    # Subscriptions & AutoPay engine
-│   │   │   ├── disputes.py         # Chargebacks & evidence defense
-│   │   │   ├── ledger.py           # Double-entry balance sheet
-│   │   │   ├── webhooks.py         # Webhook outbox & DLQ replay
-│   │   │   └── reconciliation.py   # EOD bank statement matcher
-│   │   ├── core/
-│   │   │   ├── config.py           # Pydantic v2 settings & thresholds
-│   │   │   ├── database.py         # SQLAlchemy engine with SQLite WAL
-│   │   │   └── security.py         # CardVault (AES-256-GCM) & HMACSigner
-│   │   ├── ml/
-│   │   │   ├── train_model.py      # GBM model trainer & inference
-│   │   │   └── fraud_model.pkl     # Serialized classifier pipeline
-│   │   ├── models/
-│   │   │   ├── models.py           # 14 SQLAlchemy ORM tables
-│   │   │   └── schemas.py          # Pydantic v2 DTOs & response models
-│   │   ├── services/
-│   │   │   ├── payment_engine.py   # Master payment orchestrator
-│   │   │   ├── smart_router.py     # Multi-acquirer auto-cascade switch
-│   │   │   ├── fraud_engine.py     # Sentinel heuristic & ML radar
-│   │   │   ├── split_engine.py     # Multi-vendor split calculations
-│   │   │   ├── subscription_engine.py # Recurring billing scheduler
-│   │   │   ├── dispute_engine.py   # Chargebacks & escrow manager
-│   │   │   ├── ledger_service.py   # Double-entry journal builder
-│   │   │   ├── webhook_dispatcher.py # Outbox worker & DLQ manager
-│   │   │   └── recon_service.py    # Bank CSV settlement matcher
-│   │   └── main.py                 # FastAPI application & startup lifespan
+│   │   ├── api/v1/                 # 10 modular REST API controllers
+│   │   ├── core/                   # Security (AES-256/HMAC), config & database
+│   │   ├── ml/                     # Trained GradientBoosting fraud classifier
+│   │   ├── models/                 # 14 SQLAlchemy ORM tables & Pydantic DTOs
+│   │   ├── services/               # Core payment, routing, split, sub & dispute engines
+│   │   └── main.py                 # FastAPI application lifespan & router mounts
 │   └── requirements.txt            # Pinned dependencies
 ├── frontend/
-│   └── index.html                  # Single-page Light Mode SaaS Dashboard
+│   └── index.html                  # Single-page SaaS Light Mode Dashboard
 ├── .gitignore                      # Git ignore rules
-└── README.md                       # Comprehensive documentation
+└── README.md                       # Illustrated documentation
 ```
 
 ---
