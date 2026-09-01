@@ -2,7 +2,9 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
-DB_URL = os.getenv("DB_URL", "sqlite:///./shurokkha.db")
+_backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_default_db = os.path.join(_backend_dir, "shurokkha.db").replace("\\", "/")
+DB_URL = os.getenv("DB_URL", f"sqlite:///{_default_db}")
 
 # Engine with WAL mode and foreign key enforcement
 connect_args = {"check_same_thread": False} if "sqlite" in DB_URL else {}
