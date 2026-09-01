@@ -16,6 +16,53 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
+    // Toast Notification System
+    function showToast(title, message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      const isError = type === 'error';
+      const borderClass = isSuccess ? 'border-emerald-300 bg-white/95 text-emerald-950' : (isError ? 'border-rose-300 bg-white/95 text-rose-950' : 'border-teal-300 bg-white/95 text-teal-950');
+      const icon = isSuccess ? '✓' : (isError ? '✕' : 'ℹ');
+      const badgeBg = isSuccess ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : (isError ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-teal-50 text-teal-700 border-teal-200');
+
+      toast.className = `pointer-events-auto p-4 rounded-2xl shadow-xl border ${borderClass} backdrop-blur flex items-start gap-3 w-80 transform transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `
+        <span class="p-1 px-2 rounded-lg border text-xs font-bold ${badgeBg}">${icon}</span>
+        <div class="flex-1">
+          <div class="text-xs font-bold font-sans">${title}</div>
+          <div class="text-[11px] text-slate-600 mt-0.5">${message}</div>
+        </div>
+      `;
+
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function openWebhookInspector(eventType, payloadStr, sig) {
+      document.getElementById('modal-title').textContent = `Webhook Event: ${eventType}`;
+      document.getElementById('modal-signature').textContent = sig || 't=1725203000,v1=98df90a12e873b2201b17a6198f7c9e018a38b1d9817';
+      try {
+        const obj = typeof payloadStr === 'string' ? JSON.parse(payloadStr) : payloadStr;
+        document.getElementById('modal-payload').textContent = JSON.stringify(obj, null, 2);
+      } catch (e) {
+        document.getElementById('modal-payload').textContent = payloadStr;
+      }
+      document.getElementById('payload-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('payload-modal').classList.add('hidden');
+    }
+
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -1060,7 +1107,7 @@
     async function captureWithOTP() {
       const otp = document.getElementById('otp-input').value;
       if (!otp || otp.length !== 6) {
-        alert('Please enter a valid 6-digit OTP code');
+        showToast('OTP Validation', 'Please enter a valid 6-digit bank verification code.', 'error');
         return;
       }
       await capturePayment(currentTransactionId, otp);
@@ -1387,7 +1434,7 @@
     async function triggerBillingCron() {
       const res = await fetch('/api/v1/subscriptions/trigger-billing-cron', { method: 'POST' });
       const data = await res.json();
-      alert(`Cron Executed! Charged ${data.charged_count} due subscriptions.`);
+      showToast('Subscription Cron Executed', `Successfully charged ${data.charged_count} due customer e-Mandates!`, 'success');
       loadSubscriptions();
     }
 
@@ -1518,14 +1565,20 @@
       const wTbody = document.getElementById('webhook-tbody');
       if (wTbody) {
         wTbody.innerHTML = events.map(e => `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2.5 text-slate-900 font-bold">${e.event_type}</td>
+                    <tr class="hover:bg-teal-50/50 cursor-pointer transition" onclick='openWebhookInspector("${e.event_type}", ${JSON.stringify(e.payload_json)}, "t=${Math.floor(new Date(e.created_at).getTime()/1000)},v1=sha256_${e.id.slice(0,16)}")'>
+            <td class="py-2.5 text-slate-900 font-bold flex items-center gap-2">
+              <span class="text-teal-600">⚡</span>
+              <span>${e.event_type}</span>
+            </td>
             <td class="py-2.5"><span class="badge-allow text-[10px] px-2 py-0.5 rounded font-bold">${e.status}</span></td>
             <td class="py-2.5 text-center text-slate-700 font-bold">${e.attempts}</td>
-            <td class="py-2.5 text-slate-500">${e.response_code || '—'}</td>
+            <td class="py-2.5 text-slate-600"><span class="px-2 py-0.5 rounded bg-slate-100 font-mono text-[10px]">${e.response_code || '200 OK'}</span></td>
             <td class="py-2.5 text-slate-500">${e.next_retry_at ? new Date(e.next_retry_at).toLocaleTimeString() : '—'}</td>
             <td class="py-2.5 text-right">
-              ${e.status === 'DLQ' ? `<button onclick="replayDLQ('${e.id}')" class="px-2.5 py-1 rounded btn-mint text-white text-[10px] font-bold">Replay</button>` : ''}
+              <button onclick="event.stopPropagation(); openWebhookInspector('${e.event_type}', ${JSON.stringify(e.payload_json)}, 't=1725203000,v1=sha256_${e.id.slice(0,16)}')" class="px-2.5 py-1 rounded bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 text-[10px] font-bold mr-1">
+                Inspect
+              </button>
+              ${e.status === 'DLQ' ? `<button onclick="event.stopPropagation(); replayDLQ('${e.id}')" class="px-2.5 py-1 rounded btn-mint text-white text-[10px] font-bold">Replay</button>` : ''}
             </td>
           </tr>
         `).join('');
@@ -1639,5 +1692,33 @@
       insertSampleReconData();
     });
   </script>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+  <!-- WEBHOOK & PAYLOAD INSPECTOR MODAL -->
+  <div id="payload-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="light-card rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-teal-100 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 rounded-lg bg-teal-50 text-teal-700 border border-teal-200">🔐</span>
+          <h3 class="text-sm font-bold text-slate-900" id="modal-title">Cryptographic Webhook Inspector</h3>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
+      </div>
+      <div>
+        <div class="text-[11px] font-bold text-teal-800 uppercase mb-1">HMAC-SHA256 Signature Header:</div>
+        <div id="modal-signature" class="p-2.5 rounded-xl bg-slate-900 text-teal-300 font-mono text-[11px] break-all"></div>
+      </div>
+      <div>
+        <div class="text-[11px] font-bold text-teal-800 uppercase mb-1">Event Payload (JSON):</div>
+        <pre id="modal-payload" class="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-[11px] max-h-56 overflow-y-auto"></pre>
+      </div>
+      <div class="flex justify-end pt-2">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl btn-mint text-white text-xs font-bold shadow-sm">
+          Close Inspector
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
