@@ -1,227 +1,236 @@
-# ⚡ RazorFlow Enterprise — Real-Time Payment Gateway & Sentinel AI Fraud Radar
+<div align="center">
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-3776AB.svg?logo=python&logoColor=white)](https://www.python.org)
-[![Machine Learning](https://img.shields.io/badge/ML%20Engine-GradientBoosting%20Classifier-F7931E.svg?logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
-[![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA256-blue.svg)](https://en.wikipedia.org/wiki/Galois/Counter_Mode)
-[![Accounting](https://img.shields.io/badge/Ledger-Double--Entry%20ACID-success.svg)](https://en.wikipedia.org/wiki/Double-entry_bookkeeping)
-[![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=6366f1&height=200&section=header&text=RazorFlow%20Enterprise&fontSize=52&fontAlignY=38&fontColor=ffffff&desc=Real-Time%20Payment%20Gateway%20%26%20Sentinel%20AI%20Fraud%20Radar&descAlignY=58&descSize=18" width="100%"/>
 
-> **RazorFlow Enterprise** is an end-to-end, production-grade FinTech Payment Gateway engine inspired by **Stripe, Razorpay, and Juspay Hyperswitch**. It combines multi-acquirer smart routing, auto-cascade failover, AI-driven fraud prevention, double-entry ledger bookkeeping, marketplace split payouts, recurring subscriptions, dispute defense, transactional outbox webhooks, and automated bank reconciliation.
+<br/>
+
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Python](https://img.shields.io/badge/Python_3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Scikit-Learn](https://img.shields.io/badge/ML_Fraud_Engine-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy_ACID-CC2927?style=for-the-badge&logo=database&logoColor=white)](https://sqlalchemy.org)
+[![AES-256](https://img.shields.io/badge/AES--256--GCM_Vault-1a1a2e?style=for-the-badge&logo=protonmail&logoColor=white)](#)
+[![License MIT](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
+
+<br/>
+
+> **An end-to-end, production-grade FinTech engine** inspired by Stripe, Razorpay & Juspay Hyperswitch.  
+> Built from scratch — every line of code written by hand.
+
+<br/>
+
+**Developed by [Rakib](https://github.com/rakibdipu)**
+
+<br/>
+
+</div>
 
 ---
 
-## 📸 Interactive Showcase & Visual Tour
+## ✨ What is RazorFlow?
 
-### 1. 💳 Checkout Simulator & Interactive Presets
-Real-time card tokenization with AES-256-GCM vault, instant UPI Dynamic QR, and live transaction risk telemetry.
+**RazorFlow Enterprise** is a complete, self-contained FinTech payment gateway system with 10 production-grade modules — all running locally or deployable to any cloud. It covers everything from AES-256 card tokenization to ML-based fraud detection, double-entry bookkeeping, marketplace split payments, recurring subscriptions, and HMAC-signed webhooks.
+
+This was built as a deep-dive learning project to understand how real payment systems like **Stripe**, **Razorpay**, and **Juspay** work under the hood — transaction security, bank routing, fraud prevention, and financial integrity.
+
+---
+
+## 📸 UI Showcase
+
+### 💳 Checkout Simulator — Card, UPI QR & 3DS OTP
+> AES-256-GCM tokenized card vault with real-time Sentinel risk scoring and 3D-Secure 2.0 step-up challenge flow.
+
 ![Checkout Simulator](docs/assets/01_checkout_simulator.png)
 
----
+<br/>
 
-### 2. ⚡ Smart Multi-Acquirer Router & Auto-Cascade Switch
-Dynamic cost & health-based traffic routing across **HDFC, ICICI, Stripe, and Chase** with automated zero-downtime failover.
-![Smart Routing & Auto-Cascade](docs/assets/02_smart_routing_switch.png)
+### ⚡ Smart Multi-Acquirer Router & Auto-Cascade Engine
+> Dynamically routes transactions across HDFC, ICICI, Stripe, and Chase based on live success rates and fees. Auto-cascades on outage — zero customer drop.
 
----
+![Smart Routing Switch](docs/assets/02_smart_routing_switch.png)
 
-### 3. 🛡 Sentinel AI Fraud Radar & Decision Matrix
-7 heuristic velocity/anomaly rules combined with a trained `GradientBoosting` ML classifier (`ALLOW`, `3DS CHALLENGE`, `BLOCK`).
+<br/>
+
+### 🛡 Sentinel AI Fraud Radar — 7 Rules + ML Classifier
+> Real-time heuristic velocity rules blended with a trained `GradientBoostingClassifier`. Scores 0–100: ALLOW, CHALLENGE, BLOCK.
+
 ![Sentinel Fraud Radar](docs/assets/03_sentinel_fraud_radar.png)
 
----
+<br/>
 
-### 4. 🌍 Global Real-Time Geo-Fraud Heatmap & Telemetry
-Live HTML5 canvas radar tracking global transaction origins, Tor/Proxy anomalies, and impossible travel speeds.
+### 🌍 Global Geo-Fraud Heatmap & Telemetry Stream
+> Canvas-rendered world ping radar showing real-time transaction nodes, Tor/Proxy anomalies, and impossible travel speed detection.
+
 ![Geo Heatmap](docs/assets/04_geo_heatmap.png)
 
----
+<br/>
 
-### 5. 🏪 Marketplace Split Payments & Instant Payouts (Stripe Connect Style)
-Multi-vendor order splitting, platform commission deduction, and instant merchant bank payouts.
+### 🏪 Marketplace Split Payments & Instant Vendor Payouts
+> Stripe Connect-style multi-vendor split engine with per-vendor commission deduction and instant settlement to virtual bank accounts.
+
 ![Marketplace Splits](docs/assets/05_marketplace_splits.png)
 
----
+<br/>
 
-### 6. 🔄 Recurring Subscriptions & UPI AutoPay Studio
-Subscription plan management, customer e-Mandate registration, and automated recurring billing cron.
-![Subscriptions & AutoPay](docs/assets/06_subscriptions_autopay.png)
+### 🔄 Recurring Subscriptions & UPI AutoPay Engine
+> Monthly and annual e-Mandate registration, automated recurring billing cycles, and dunning retry logic for failed renewals.
 
----
+![Subscriptions AutoPay](docs/assets/06_subscriptions_autopay.png)
 
-### 7. 📒 Double-Entry Bookkeeping Ledger
-Strict immutable T-accounts journal (`ACQUIRER_CLEARING`, `MERCHANT_PAYABLE`, `GATEWAY_FEE_REVENUE`, `FRAUD_HOLD`) verifying $\sum 	ext{Dr} = \sum 	ext{Cr}$.
-![Double-Entry Ledger](docs/assets/07_double_entry_ledger.png)
+<br/>
 
----
+### 📒 Strict Double-Entry Bookkeeping Ledger
+> Every paisa tracked across 4 immutable T-accounts. Mathematically verified: **Σ Debits = Σ Credits** on every single transaction.
 
-### 8. 🔔 Transactional Outbox Webhook Dispatcher
-HMAC-SHA256 cryptographically signed webhook delivery with anti-replay timestamps and Dead Letter Queue (DLQ) replay.
+![Double Entry Ledger](docs/assets/07_double_entry_ledger.png)
+
+<br/>
+
+### 🔔 Transactional Outbox Webhook Dispatcher
+> HMAC-SHA256 signed payloads with timestamp anti-replay defense, exponential backoff retries, and Dead Letter Queue (DLQ) with manual replay.
+
 ![Webhook Dispatcher](docs/assets/08_webhook_dispatcher.png)
 
----
+<br/>
 
-### 9. 🔍 Automated End-of-Day Bank Statement Reconciliation
-4-way automated clearing reconciliation classifying bank batches into `MATCHED`, `AMOUNT_MISMATCH`, and `MISSING_IN_BANK`.
+### 🔍 Automated End-of-Day Bank Reconciliation
+> Ingests bank clearing settlement CSVs and classifies records: `MATCHED`, `AMOUNT_MISMATCH`, `MISSING_IN_BANK`, `EXTRA_IN_BANK`.
+
 ![Bank Reconciliation](docs/assets/09_bank_reconciliation.png)
 
+<br/>
+
+### 📖 Interactive OpenAPI / Swagger Documentation
+> 25+ production REST endpoints across 10 fully documented API controllers.
+
+![Swagger API Docs](docs/assets/10_swagger_api_docs.png)
+
 ---
 
-### 10. 📖 Interactive OpenAPI Swagger Documentation
-Over 25+ production REST endpoints organized across 10 modular controllers.
-![OpenAPI Swagger Docs](docs/assets/10_swagger_api_docs.png)
-
----
-
-## 🏛 System Architecture & Workflow
+## 🏛 Architecture Overview
 
 ```
-                          ┌────────────────────────┐
-                          │   Client / Merchant    │
-                          │   (Checkout SDK / API) │
-                          └───────────┬────────────┘
-                                      │
-                                      ▼
-             ┌──────────────────────────────────────────────────┐
-             │       Idempotency Guard & Card Vault             │
-             │     (AES-256-GCM Tokenization & Hash Key)        │
-             └────────────────────────┬─────────────────────────┘
-                                      │
-                                      ▼
-             ┌──────────────────────────────────────────────────┐
-             │            Sentinel AI Fraud Radar               │
-             │   ┌──────────────────────┬───────────────────┐   │
-             │   │ 7 Heuristic Rules    │ ML Gradient Boost │   │
-             │   │ (Velocity & Anomaly) │ (Risk Prob 0-100) │   │
-             │   └──────────────────────┴───────────────────┘   │
-             │          Decision Matrix: 60% Rule + 40% ML      │
-             └──────┬─────────────────┬───────────────────┬─────┘
-                    │                 │                   │
-         [Score < 30]    [Score 30-69]    [Score >= 70]
-              ALLOW         CHALLENGE             BLOCK
-                    │                 │                   │
-                    │        ┌────────▼────────┐          ▼
-                    │        │ 3DS 2.0 OTP Hub │   [Transaction Blocked]
-                    │        └────────┬────────┘
-                    ▼                 ▼
-             ┌──────────────────────────────────────────────────┐
-             │      Smart Multi-Acquirer Routing Switch         │
-             │  (Dynamic Cost & Health Routing with Cascade)   │
-             │                                                  │
-             │   ┌────────┐    ┌────────┐    ┌────────┐    ┌─── │
-             │   │  HDFC  │ ──►│ ICICI  │ ──►│ STRIPE │ ──►│ ...│
-             │   └────────┘    └────────┘    └────────┘    └─── │
-             └────────────────────────┬─────────────────────────┘
-                                      │
-                         [Bank Capture & Settlement]
-                                      │
-                    ┌─────────────────┴─────────────────┐
-                    ▼                                   ▼
-   ┌─────────────────────────────────┐ ┌─────────────────────────────────┐
-   │    Double-Entry Ledger Engine   │ │   Transactional Outbox Webhook  │
-   │   (Strict Σ Dr == Σ Cr ACID)    │ │   (HMAC-SHA256 & DLQ Worker)    │
-   └─────────────────────────────────┘ └─────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────────────┐
+  │                    Merchant / Checkout Client                    │
+  └───────────────────────────────┬──────────────────────────────────┘
+                                  │
+                    ┌─────────────▼─────────────┐
+                    │   Idempotency Guard        │
+                    │   + AES-256-GCM Card Vault │
+                    └─────────────┬─────────────┘
+                                  │
+                    ┌─────────────▼─────────────┐
+                    │   Sentinel AI Fraud Radar  │
+                    │  ┌────────────┬──────────┐ │
+                    │  │  7 Rules   │  ML GBM  │ │
+                    │  └────────────┴──────────┘ │
+                    │   60% Rules + 40% ML       │
+                    └──────┬───────┬────────┬────┘
+                           │       │        │
+                      ALLOW   CHALLENGE   BLOCK
+                           │       │        │
+                           │  3DS OTP    Rejected
+                           │       │
+                    ┌──────▼───────▼──────────────┐
+                    │  Smart Multi-Acquirer Router  │
+                    │  HDFC → ICICI → Stripe → Chase│
+                    │  (Auto-Cascade on Outage)     │
+                    └───────────────┬───────────────┘
+                                    │
+              ┌─────────────────────┴──────────────────┐
+              │                                        │
+   ┌──────────▼────────────┐           ┌───────────────▼──────────────┐
+   │  Double-Entry Ledger  │           │  Webhook Outbox + DLQ Worker  │
+   │  (ACID: ΣDr = ΣCr)    │           │  (HMAC-SHA256 Signed Events)  │
+   └───────────────────────┘           └──────────────────────────────┘
 ```
 
 ---
 
 ## 🛠 Tech Stack
 
-| Component | Technology | Purpose |
+| Layer | Technology | Why |
 |---|---|---|
-| **Backend Framework** | [FastAPI](https://fastapi.tiangolo.com/) | High-performance async Python REST API |
-| **Database & ORM** | [SQLAlchemy 2.0](https://www.sqlalchemy.org/) + SQLite WAL | Synchronous ACID transactions with Write-Ahead Logging |
-| **Machine Learning** | [Scikit-Learn](https://scikit-learn.org/) + [Joblib](https://joblib.readthedocs.io/) | GradientBoosting fraud probability model |
-| **Cryptography** | [Cryptography (AESGCM)](https://cryptography.io/) + `hmac` | AES-256-GCM card tokenization & HMAC-SHA256 signatures |
-| **Frontend UI** | Modern Vanilla JS + [Tailwind CSS](https://tailwindcss.com/) + [Chart.js](https://www.chartjs.org/) + [QRCode.js](https://davidshimjs.github.io/qrcodejs/) | Clean SaaS Light Mode Dashboard (Zero build tools needed) |
+| **API Framework** | FastAPI + Uvicorn | Async, type-safe, blazing fast |
+| **Database** | SQLAlchemy 2.0 + SQLite (WAL mode) | ACID transactions, zero external dependency |
+| **ML Engine** | Scikit-Learn `GradientBoostingClassifier` | Trained on 2,000 synthetic fraud vectors |
+| **Cryptography** | `cryptography` (AESGCM) + `hmac` | PCI-DSS Grade AES-256-GCM + HMAC-SHA256 |
+| **Frontend** | Vanilla JS + Tailwind CSS + Chart.js + QRCode.js | Zero build tools, clean SaaS light mode UI |
 
 ---
 
-## ⚡ Quick Start Guide
+## ⚡ Quick Start
 
-### 1. Clone the Repository
 ```bash
+# 1. Clone
 git clone https://github.com/rakibdipu/razorflow-gateway.git
 cd razorflow-gateway
-```
 
-### 2. Set Up Virtual Environment & Dependencies
-```bash
-# Create virtual environment
+# 2. Create virtual environment & install
 python -m venv venv
+source venv/bin/activate        # Linux/macOS
+.\venv\Scripts\Activate.ps1     # Windows PowerShell
 
-# Activate virtual environment
-# On Windows (PowerShell):
-.\venv\Scripts\Activate.ps1
-# On Linux / macOS:
-source venv/bin/activate
-
-# Install requirements
 pip install -r backend/requirements.txt
-```
 
-### 3. Run the Server
-```bash
+# 3. Start the server
 cd backend
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 4. Access Dashboard & API Docs
-- 🖥 **Unified Web Dashboard:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- 📖 **Interactive Swagger API Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- 🩺 **Health Endpoint:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+Then open:
+- 🖥 **Dashboard UI** → http://127.0.0.1:8000/
+- 📖 **Swagger API** → http://127.0.0.1:8000/docs
 
 ---
 
-## 🧪 Interactive Test Presets & Cards
+## 🧪 Test Cards
 
-| Card Preset | Card Number | Expiry | CVV | Risk Tier | Behavior |
-|---|---|---|---|---|---|
-| **ALLOW Card** | `4111 1111 1111 1111` | `12/27` | `123` | `ALLOW` (Risk < 30) | Instant Straight-Through Capture |
-| **3DS Challenge** | `4000 0000 0000 0002` | `12/27` | `123` | `CHALLENGE` (Risk 30–69) | Requires 6-Digit 3DS OTP verification |
-| **BLOCK Card** | `4000 0000 0000 0069` | `12/27` | `123` | `BLOCK` (Risk >= 70) | Rejected immediately by Fraud Radar |
+| Preset | Card Number | CVV | Expected Result |
+|---|---|---|---|
+| ✅ **ALLOW** | `4111 1111 1111 1111` | `123` | Risk score < 30, instant capture |
+| ⚠️ **3DS Challenge** | `4000 0000 0000 0002` | `111` | Risk 30–69, OTP step-up required |
+| 🚫 **BLOCK (Fraud)** | `4000 0000 0000 0069` | `000` | Risk ≥ 70, auto-rejected |
 
 ---
 
-## 📁 Repository Structure
+## 📁 Project Structure
 
 ```
 razorflow-gateway/
-├── docs/
-│   └── assets/                     # High-resolution UI screenshots & diagrams
-│       ├── 01_checkout_simulator.png
-│       ├── 02_smart_routing_switch.png
-│       ├── 03_sentinel_fraud_radar.png
-│       ├── 04_geo_heatmap.png
-│       ├── 05_marketplace_splits.png
-│       ├── 06_subscriptions_autopay.png
-│       ├── 07_double_entry_ledger.png
-│       ├── 08_webhook_dispatcher.png
-│       ├── 09_bank_reconciliation.png
-│       └── 10_swagger_api_docs.png
+├── docs/assets/              # UI screenshots used in this README
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/                 # 10 modular REST API controllers
-│   │   ├── core/                   # Security (AES-256/HMAC), config & database
-│   │   ├── ml/                     # Trained GradientBoosting fraud classifier
-│   │   ├── models/                 # 14 SQLAlchemy ORM tables & Pydantic DTOs
-│   │   ├── services/               # Core payment, routing, split, sub & dispute engines
-│   │   └── main.py                 # FastAPI application lifespan & router mounts
-│   └── requirements.txt            # Pinned dependencies
+│   │   ├── api/v1/           # 10 REST API controllers
+│   │   ├── core/             # AES-256 vault, HMAC signer, config
+│   │   ├── ml/               # Fraud model training & inference
+│   │   ├── models/           # 14 SQLAlchemy tables + Pydantic DTOs
+│   │   ├── services/         # Business logic engines
+│   │   └── main.py           # App lifespan & router setup
+│   └── requirements.txt
 ├── frontend/
-│   └── index.html                  # Single-page SaaS Light Mode Dashboard
-├── .gitignore                      # Git ignore rules
-└── README.md                       # Illustrated documentation
+│   └── index.html            # Complete SaaS dashboard SPA
+└── README.md
 ```
 
 ---
 
-## 🔒 Security & Compliance Principles
-- **PCI-DSS Level 1 Principles**: Raw PANs are never stored in plaintext. PANs are encrypted using authenticated **AES-256-GCM** with a unique 12-byte initialization vector (nonce) per entry.
-- **HMAC Signatures & Anti-Replay**: Outgoing webhooks are signed using SHA-256 HMAC with timestamps. Receivers verify timestamps within a strict 300-second window to prevent replay attacks.
-- **Double-Entry Balance Guarantee**: Every financial transfer is posted across matching Debit and Credit T-accounts, enforcing strict mathematical conservation of money.
+## 🔒 Security Highlights
+
+- **Card PAN never stored in plaintext** — AES-256-GCM encrypted with per-entry 12-byte nonce
+- **Webhook replay protection** — HMAC timestamp verified within 300-second window
+- **Double-entry integrity** — every transaction algebraically verified: `Σ Dr = Σ Cr`
+- **Fraud escrow** — disputed funds auto-locked in `FRAUD_HOLD` T-account pending resolution
 
 ---
 
-## 📄 License
-Distributed under the **MIT License**.
+<div align="center">
+
+<br/>
+
+**Built with 💜 by [Rakib](https://github.com/rakibdipu)**
+
+*If you found this useful, consider giving it a ⭐ on GitHub!*
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=6366f1&height=100&section=footer" width="100%"/>
+
+</div>
