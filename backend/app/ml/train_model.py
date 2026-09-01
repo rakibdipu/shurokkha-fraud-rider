@@ -130,13 +130,9 @@ def predict_risk(features_dict: dict) -> dict:
     """
     model = _get_model()
     
-    # Build feature vector in correct order
-    feature_vector = []
-    for fname in FEATURE_NAMES:
-        feature_vector.append(float(features_dict.get(fname, 0)))
-    
-    import numpy as np
-    X = np.array([feature_vector])
+    import pandas as pd
+    row = {fname: float(features_dict.get(fname, 0)) for fname in FEATURE_NAMES}
+    X = pd.DataFrame([row])
     
     # Get fraud probability
     proba = model.predict_proba(X)[0]  # [prob_legit, prob_fraud]
