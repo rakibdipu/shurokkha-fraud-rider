@@ -69,7 +69,7 @@ def generate_training_data(n_samples: int = 2000) -> pd.DataFrame:
 
 def train_and_save():
     """Train the fraud detection model and save to disk."""
-    print("[RazorFlow ML] Generating training data...")
+    print("[Shurokkha Sentinel ML] Generating training data...")
     df = generate_training_data(2000)
     
     X = df[FEATURE_NAMES]
@@ -77,7 +77,7 @@ def train_and_save():
     
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     
-    print("[RazorFlow ML] Training GradientBoostingClassifier...")
+    print("[Shurokkha Sentinel ML] Training GradientBoostingClassifier...")
     pipeline = Pipeline([
         ('scaler', StandardScaler()),
         ('clf', GradientBoostingClassifier(
@@ -91,13 +91,13 @@ def train_and_save():
     pipeline.fit(X_train, y_train)
     
     y_pred = pipeline.predict(X_test)
-    print("\n[RazorFlow ML] Classification Report:")
+    print("\n[Shurokkha Sentinel ML] Classification Report:")
     print(classification_report(y_test, y_pred, target_names=['Legit', 'Fraud']))
     
     # Save model
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
     joblib.dump(pipeline, MODEL_PATH)
-    print(f"[RazorFlow ML] Model saved to: {MODEL_PATH}")
+    print(f"[Shurokkha Sentinel ML] Model saved to: {MODEL_PATH}")
     return pipeline
 
 def load_model():

@@ -31,7 +31,7 @@ class PaymentInitiateRequest(BaseModel):
     card: Optional[CardDetails] = None
     upi_vpa: Optional[str] = None
     ip_address: Optional[str] = "127.0.0.1"
-    user_agent: Optional[str] = "RazorFlow-SDK/1.0"
+    user_agent: Optional[str] = "Shurokkha-SDK/1.0"
     preferred_gateway: Optional[str] = None
 
 

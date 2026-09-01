@@ -53,7 +53,7 @@ async def test_webhook_receiver(request: Request):
     """
     body = await request.body()
     body_str = body.decode('utf-8')
-    signature_header = request.headers.get('X-RazorFlow-Signature', '')
+    signature_header = request.headers.get('X-Shurokkha-Signature') or request.headers.get('X-Shurokkha-Signature', '')
     
     is_valid = HMACSigner.verify_signature(settings.HMAC_SECRET, body_str, signature_header)
     is_replay = HMACSigner.is_replay_attack(signature_header) if signature_header else True
@@ -62,7 +62,7 @@ async def test_webhook_receiver(request: Request):
         'received_at': __import__('datetime').datetime.utcnow().isoformat() + 'Z',
         'signature_valid': is_valid,
         'is_replay_attack': is_replay,
-        'event_type': request.headers.get('X-RazorFlow-Event', 'unknown'),
+        'event_type': request.headers.get('X-Shurokkha-Event') or request.headers.get('X-Shurokkha-Event', 'unknown'),
         'payload': json.loads(body_str) if body_str else {}
     }
     _received_webhooks.append(receipt)
@@ -77,11 +77,11 @@ def get_webhook_receiver_history():
 @router.post('/verify-signature')
 async def verify_webhook_signature(request: Request):
     """
-    Verify a webhook signature. Pass raw body and X-RazorFlow-Signature header.
+    Verify a webhook signature. Pass raw body and X-Shurokkha-Signature header.
     """
     body = await request.body()
     body_str = body.decode('utf-8')
-    sig = request.headers.get('X-RazorFlow-Signature', '')
+    sig = request.headers.get('X-Shurokkha-Signature') or request.headers.get('X-Shurokkha-Signature', '')
     secret = request.headers.get('X-Webhook-Secret', settings.HMAC_SECRET)
     
     is_valid = HMACSigner.verify_signature(secret, body_str, sig)

@@ -1,5 +1,5 @@
 """
-RazorFlow Seed Data Script
+Shurokkha Seed Data Script
 Run from: r:/company-wise-projects-main/razorflow-gateway/backend/
 Command:   python ../scripts/seed_data.py
 """

@@ -67,7 +67,35 @@ def refund_payment(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f'Refund failed: {str(e)}')
 
-@router.get('/{transaction_id}')
+@router.get('/transactions')
+def list_transactions(
+    status: Optional[str] = None,
+    risk_tier: Optional[str] = None,
+    limit: int = 50,
+    db: Session = Depends(get_db)
+):
+    """List all transactions with optional filters by status or risk tier."""
+    from app.models.models import Transaction
+    query = db.query(Transaction)
+    if status:
+        query = query.filter(Transaction.status == status)
+    if risk_tier:
+        query = query.filter(Transaction.risk_tier == risk_tier)
+    txns = query.order_by(Transaction.created_at.desc()).limit(limit).all()
+    return [{
+        'id': t.id,
+        'order_id': t.order_id,
+        'status': t.status,
+        'risk_score': t.risk_score,
+        'risk_tier': t.risk_tier,
+        'bank_ref': t.bank_ref,
+        'acquirer_gateway': getattr(t, 'acquirer_gateway', None),
+        'captured_at': t.captured_at.isoformat() + 'Z' if t.captured_at else None,
+        'refunded_at': t.refunded_at.isoformat() + 'Z' if t.refunded_at else None,
+        'created_at': t.created_at.isoformat() + 'Z',
+    } for t in txns]
+
+@router.get('/transaction/{transaction_id}')
 def get_transaction(transaction_id: str, db: Session = Depends(get_db)):
     """Get transaction details by ID."""
     try:

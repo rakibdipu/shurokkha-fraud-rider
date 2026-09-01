@@ -55,7 +55,7 @@ class LedgerService:
             ))
             entries.append(LedgerService._create_entry(
                 transaction_id, 'CREDIT', 'GATEWAY_FEE_REVENUE', fee,
-                f'RazorFlow processing fee {settings.GATEWAY_FEE_PERCENT}% on {amount_paise} paise', db
+                f'Shurokkha processing fee {settings.GATEWAY_FEE_PERCENT}% on {amount_paise} paise', db
             ))
             db.commit()
         except Exception:

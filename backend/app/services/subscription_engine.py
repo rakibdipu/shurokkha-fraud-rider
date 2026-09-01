@@ -16,7 +16,7 @@ class SubscriptionEngine:
         if db.query(SubscriptionPlan).count() == 0:
             plans = [
                 SubscriptionPlan(
-                    name="RazorFlow Starter Plan",
+                    name="Shurokkha Starter Plan",
                     interval="monthly",
                     amount_paise=99900,  # 999 INR
                     currency="INR"

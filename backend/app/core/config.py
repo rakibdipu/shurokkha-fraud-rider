@@ -5,17 +5,17 @@ try:
     from pydantic_settings import BaseSettings
 
     class Settings(BaseSettings):
-        APP_NAME: str = "RazorFlow"
+        APP_NAME: str = "Shurokkha Fraud Rider"
         APP_VERSION: str = "1.0.0"
         DEBUG: bool = True
         
         # Security
-        SECRET_KEY: str = "razorflow-aes-key-32-bytes-secret"  # Must be 32 bytes for AES-256
-        HMAC_SECRET: str = "razorflow-hmac-webhook-secret-key"
-        API_KEY_HEADER: str = "X-RazorFlow-API-Key"
+        SECRET_KEY: str = "shurokkha-aes-key-32-bytes-secret"  # Must be 32 bytes for AES-256
+        HMAC_SECRET: str = "shurokkha-hmac-webhook-secret-key"
+        API_KEY_HEADER: str = "X-Shurokkha-API-Key"
         
         # Database
-        DB_URL: str = "sqlite:///./razorflow.db"
+        DB_URL: str = "sqlite:///./shurokkha.db"
         
         # Fraud Engine Thresholds
         FRAUD_VELOCITY_MAX_PER_MINUTE: int = 3
@@ -44,17 +44,17 @@ try:
 
 except ImportError:
     class Settings:
-        APP_NAME: str = "RazorFlow"
+        APP_NAME: str = "Shurokkha Fraud Rider"
         APP_VERSION: str = "1.0.0"
         DEBUG: bool = True
         
         # Security
-        SECRET_KEY: str = "razorflow-aes-key-32-bytes-secret"  # Must be 32 bytes for AES-256
-        HMAC_SECRET: str = "razorflow-hmac-webhook-secret-key"
-        API_KEY_HEADER: str = "X-RazorFlow-API-Key"
+        SECRET_KEY: str = "shurokkha-aes-key-32-bytes-secret"  # Must be 32 bytes for AES-256
+        HMAC_SECRET: str = "shurokkha-hmac-webhook-secret-key"
+        API_KEY_HEADER: str = "X-Shurokkha-API-Key"
         
         # Database
-        DB_URL: str = "sqlite:///./razorflow.db"
+        DB_URL: str = "sqlite:///./shurokkha.db"
         
         # Fraud Engine Thresholds
         FRAUD_VELOCITY_MAX_PER_MINUTE: int = 3

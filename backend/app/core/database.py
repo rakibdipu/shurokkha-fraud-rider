@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
-DB_URL = os.getenv("DB_URL", "sqlite:///./razorflow.db")
+DB_URL = os.getenv("DB_URL", "sqlite:///./shurokkha.db")
 
 # Engine with WAL mode and foreign key enforcement
 connect_args = {"check_same_thread": False} if "sqlite" in DB_URL else {}

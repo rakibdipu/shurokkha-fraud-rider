@@ -27,10 +27,11 @@ ENV/
 .venv
 
 # Database
-backend/razorflow.db
-backend/razorflow.db-wal
-backend/razorflow.db-shm
+backend/razorflow.db*
+backend/shurokkha.db*
 *.db
+*.db-wal
+*.db-shm
 *.sqlite3
 
 # Environment variables

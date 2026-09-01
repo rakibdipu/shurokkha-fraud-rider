@@ -33,7 +33,7 @@ def ensure_ml_model():
     """Train ML model if not already trained."""
     model_path = os.path.join(os.path.dirname(__file__), "ml", "fraud_model.pkl")
     if not os.path.exists(model_path):
-        print("[RazorFlow] ML model not found. Training now...")
+        print("[Shurokkha] ML model not found. Training now...")
         from app.ml.train_model import train_and_save
         train_and_save()
 
@@ -53,7 +53,7 @@ def webhook_background_worker():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print(f"[RazorFlow] Starting {settings.APP_NAME} v{settings.APP_VERSION}")
+    print(f"[Shurokkha] Starting {settings.APP_NAME} v{settings.APP_VERSION}")
     create_all_tables()
     ensure_ml_model()
     
@@ -65,19 +65,19 @@ async def lifespan(app: FastAPI):
         SubscriptionEngine.seed_default_plans(db)
         db.close()
     except Exception as e:
-        print("[RazorFlow Setup Error]", e)
+        print("[Shurokkha Setup Error]", e)
 
     # Start background worker
     worker = threading.Thread(target=webhook_background_worker, daemon=True)
     worker.start()
 
     yield
-    print("[RazorFlow] Shutting down.")
+    print("[Shurokkha] Shutting down.")
 
 
 app = FastAPI(
-    title="RazorFlow Enterprise Gateway",
-    description="Real-Time Payment Gateway, Sentinel AI Fraud Radar & Smart Multi-Acquirer Switch",
+    title="Shurokkha Fraud Rider — Payment Gateway",
+    description="Real-Time Payment Gateway & Sentinel AI Fraud Radar",
     version=settings.APP_VERSION,
     lifespan=lifespan
 )
@@ -95,7 +95,7 @@ async def add_request_id(request: Request, call_next):
     request_id = str(uuid.uuid4())
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
-    response.headers["X-RazorFlow-Version"] = settings.APP_VERSION
+    response.headers["X-Shurokkha-Version"] = settings.APP_VERSION
     return response
 
 # Mount static files
@@ -121,7 +121,7 @@ frontend_path = os.path.join(os.path.dirname(__file__), "..", "..", "frontend", 
 def serve_dashboard():
     if os.path.exists(frontend_path):
         return FileResponse(frontend_path)
-    return JSONResponse({"message": "RazorFlow API running. See /docs for API reference."})
+    return JSONResponse({"message": "Shurokkha API running. See /docs for API reference."})
 
 @app.get("/health")
 def health_check():

@@ -1,5 +1,5 @@
 ﻿"""
-RazorFlow One-Click Startup Script
+Shurokkha One-Click Startup Script
 Usage: python scripts/start_system.py
 Run from: r:/company-wise-projects-main/razorflow-gateway/
 """
@@ -19,7 +19,7 @@ DB_PATH = os.path.join(BACKEND_DIR, 'razorflow.db')
 
 BANNER = """
 ╔══════════════════════════════════════════════════════════╗
-║         RazorFlow Payment Gateway v1.0.0                 ║
+║         Shurokkha Payment Gateway v1.0.0                 ║
 ║   Real-Time Payments + AI Fraud Detection Engine         ║
 ╠══════════════════════════════════════════════════════════╣
 ║  Dashboard:   http://127.0.0.1:8000/                     ║
@@ -50,7 +50,7 @@ def main():
     subprocess.run([sys.executable, seed_script], cwd=BACKEND_DIR)
     
     # 3. Launch FastAPI server
-    print('[Setup] Launching RazorFlow server...')
+    print('[Setup] Launching Shurokkha server...')
     print('[Setup] Press Ctrl+C to stop.\n')
     run([
         sys.executable, '-m', 'uvicorn',

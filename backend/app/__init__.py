@@ -1,1 +1,1 @@
-"""RazorFlow App Package."""
+"""Shurokkha App Package."""

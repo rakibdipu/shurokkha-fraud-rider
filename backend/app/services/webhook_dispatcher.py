@@ -53,9 +53,9 @@ class WebhookDispatcher:
         signature = HMACSigner.sign_payload(merchant.webhook_secret or settings.HMAC_SECRET, body)
         headers = {
             'Content-Type': 'application/json',
-            'X-RazorFlow-Signature': signature,
-            'X-RazorFlow-Event': payload.get('event', 'unknown'),
-            'User-Agent': f'RazorFlow-Webhook/1.0 ({settings.APP_VERSION})'
+            'X-Shurokkha-Signature': signature,
+            'X-Shurokkha-Event': payload.get('event', 'unknown'),
+            'User-Agent': f'Shurokkha-Webhook/1.0 ({settings.APP_VERSION})'
         }
         return headers, body
 
