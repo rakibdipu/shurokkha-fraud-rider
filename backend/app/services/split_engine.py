@@ -41,14 +41,16 @@ class MarketplaceSplitEngine:
             db.commit()
 
     @staticmethod
-    def process_split_payment(transaction_id: str, split_items: list, db: Session) -> dict:
+    def process_split_payment(id_val: str, split_items: list, db: Session) -> dict:
         """
-        Execute split across vendors for a captured transaction.
+        Execute split across vendors for a captured transaction or order.
         Updates vendor balances and generates double-entry sub-ledger postings.
         """
-        txn = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+        txn = db.query(Transaction).filter(
+            (Transaction.id == id_val) | (Transaction.order_id == id_val)
+        ).first()
         if not txn:
-            raise ValueError(f"Transaction {transaction_id} not found")
+            raise ValueError(f"Transaction or Order for {id_val} not found")
 
         order = db.query(Order).filter(Order.id == txn.order_id).first()
         total_amount = order.amount_paise
@@ -94,7 +96,7 @@ class MarketplaceSplitEngine:
 
         db.commit()
         return {
-            "transaction_id": transaction_id,
+            "transaction_id": txn.id,
             "total_split_paise": total_split_amount,
             "splits": created_splits
         }
