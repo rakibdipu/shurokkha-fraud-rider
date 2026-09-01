@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RazorFlow Enterprise — Full-Stack FinTech Engine</title>
+  <title>Shurokkha Fraud Rider — Real-Time Payment Gateway & Sentinel AI Fraud Radar</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,83 +29,94 @@
     }
   </script>
 
-  <style>
-    /* ── Base ─────────────────────────────────────── */
+    <style>
+    /* === SHUROKKHA — Mint Green + Sky Blue Premium Light Theme === */
+
+    /* Base */
     body {
-      background-color: #F1F5F9;
-      background-image: radial-gradient(ellipse at 60% 0%, #EEF2FF 0%, transparent 55%);
-      color: #0F172A;
+      background-color: #F0FDF9;
+      background-image:
+        radial-gradient(ellipse at 70% 0%, rgba(6,182,212,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.07) 0%, transparent 50%);
+      color: #134E4A;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* ── Cards ─────────────────────────────────────── */
+    /* Cards */
     .light-card {
       background: #FFFFFF;
-      border: 1px solid #E8EDF5;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.03);
-      transition: box-shadow 0.2s ease;
+      border: 1px solid #D1FAE5;
+      box-shadow: 0 1px 4px rgba(6,182,212,0.07), 0 1px 2px rgba(16,185,129,0.04);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .light-card:hover {
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 4px rgba(15, 23, 42, 0.04);
+      border-color: #6EE7B7;
+      box-shadow: 0 4px 20px rgba(6,182,212,0.11), 0 2px 8px rgba(16,185,129,0.07);
     }
     .light-card-elevated {
       background: #FFFFFF;
-      border: 1px solid #E8EDF5;
-      box-shadow: 0 4px 24px -4px rgba(79, 70, 229, 0.09), 0 2px 8px rgba(15, 23, 42, 0.04);
+      border: 1px solid #CFFAFE;
+      box-shadow: 0 4px 24px -4px rgba(6,182,212,0.15), 0 2px 8px rgba(16,185,129,0.07);
     }
 
-    /* ── Inputs ─────────────────────────────────────── */
+    /* Inputs */
     .light-input {
-      background: #F8FAFC;
-      border: 1.5px solid #CBD5E1;
-      color: #0F172A;
+      background: #F0FDFA;
+      border: 1.5px solid #A7F3D0;
+      color: #134E4A;
       transition: all 0.18s ease;
     }
     .light-input:focus {
       background: #FFFFFF;
-      border-color: #6366F1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+      border-color: #06B6D4;
+      box-shadow: 0 0 0 3px rgba(6,182,212,0.13);
       outline: none;
     }
-    .light-input::placeholder { color: #94A3B8; }
+    .light-input::placeholder { color: #6EE7B7; }
 
-    /* ── Navigation tabs ─────────────────────────────── */
+    /* Nav Tabs */
     .nav-tab {
       transition: all 0.15s ease;
       color: #64748B;
       font-weight: 600;
       white-space: nowrap;
     }
-    .nav-tab:hover { color: #334155; background: #F1F5F9; }
+    .nav-tab:hover { color: #0F766E; background: #F0FDF9; }
     .nav-tab.active {
-      color: #4338CA;
-      background: #EEF2FF;
-      border: 1px solid #C7D2FE;
+      color: #0E7490;
+      background: linear-gradient(135deg, #ECFDF5, #CFFAFE);
+      border: 1px solid #6EE7B7;
       font-weight: 700;
     }
 
-    /* ── Realistic bank card preview ──────────────────── */
-    .credit-card-preview {
-      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2D3748 100%);
-      box-shadow: 0 20px 40px -6px rgba(15, 23, 42, 0.40), 0 4px 10px rgba(0,0,0,0.15);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+    /* Shield Logo — Glassmorphism Mint+Cyan */
+    .shield-logo {
+      background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+      box-shadow: 0 4px 16px rgba(6,182,212,0.35), 0 0 0 2px rgba(255,255,255,0.5) inset;
     }
 
-    /* ── Scrollbar ─────────────────────────────────────── */
+    /* Bank card preview — deep teal premium */
+    .credit-card-preview {
+      background: linear-gradient(135deg, #042f2e 0%, #065f46 55%, #0e7490 100%);
+      box-shadow: 0 20px 40px -6px rgba(6,182,212,0.38), 0 4px 12px rgba(16,185,129,0.22);
+      border: 1px solid rgba(110,231,183,0.22);
+    }
+
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 6px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+    ::-webkit-scrollbar-thumb { background: #A7F3D0; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #34D399; }
 
-    /* ── Badges ─────────────────────────────────────── */
-    .badge-allow     { background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; font-weight: 700; }
-    .badge-challenge { background: #FEFCE8; color: #854D0E; border: 1px solid #FDE68A; font-weight: 700; }
+    /* Risk Badges */
+    .badge-allow     { background: #ECFDF5; color: #065F46; border: 1px solid #6EE7B7; font-weight: 700; }
+    .badge-challenge { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; }
     .badge-block     { background: #FFF1F2; color: #9F1239; border: 1px solid #FECDD3; font-weight: 700; }
 
-    /* ── Spinner ─────────────────────────────────────── */
+    /* Spinner */
     .spinner-sm {
-      border: 2px solid #E2E8F0;
-      border-top-color: #6366F1;
+      border: 2px solid #D1FAE5;
+      border-top-color: #06B6D4;
       border-radius: 50%;
       width: 15px; height: 15px;
       animation: spin 0.55s linear infinite;
@@ -113,14 +124,40 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Divider lines ───────────────────────────────── */
-    hr, .border-b { border-color: #F1F5F9; }
+    /* Dividers */
+    hr, .border-b { border-color: #ECFDF5; }
 
-    /* ── Subtle table row hover ───────────────────────── */
-    tbody tr:hover td { background: #F8FAFC; transition: background 0.1s ease; }
+    /* Table hover */
+    tbody tr:hover td { background: #F0FDFA; transition: background 0.1s ease; }
+
+    /* Primary button — Mint to Cyan gradient glow */
+    .btn-mint {
+      background: linear-gradient(135deg, #10B981, #06B6D4);
+      color: #FFFFFF;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: 0 4px 14px rgba(6,182,212,0.32);
+      transition: all 0.15s ease;
+    }
+    .btn-mint:hover {
+      box-shadow: 0 6px 22px rgba(6,182,212,0.46);
+      transform: translateY(-1px);
+    }
+    .btn-mint:active { transform: scale(0.985); }
+
+    /* Soft glow pill badge for "Enterprise" */
+    .enterprise-pill {
+      background: linear-gradient(135deg, #ECFDF5, #CFFAFE);
+      color: #0E7490;
+      border: 1px solid #6EE7B7;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased" style="background-color:#F1F5F9">
+<body class="min-h-screen flex flex-col antialiased" style="background-color:#F0FDF9">
 
   <!-- TOP APP BAR -->
   <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-sm sticky top-0 z-50" style="box-shadow: 0 1px 6px rgba(15,23,42,0.06);">
@@ -128,7 +165,7 @@
       
       <!-- Brand Logo -->
       <div class="flex items-center gap-3">
-        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center shadow-md shadow-teal-500/20 text-white">
           <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
@@ -146,13 +183,13 @@
       <div class="flex items-center gap-3">
         <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-xs">
           <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-slate-700 font-medium">Auto-Cascade Switch: <strong class="text-indigo-600">Active</strong></span>
+          <span class="text-slate-700 font-medium">Auto-Cascade Switch: <strong class="text-teal-600">Active</strong></span>
           <span class="text-slate-300">|</span>
-          <span class="text-slate-600">Ledger: <strong class="text-emerald-700 font-mono">100% Balanced</strong></span>
+          <span class="text-slate-600">Ledger: <strong class="text-teal-700 font-mono">100% Balanced</strong></span>
         </div>
 
         <a href="/docs" target="_blank" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-700 transition flex items-center gap-1.5 shadow-sm">
-          <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <svg class="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           API Docs
         </a>
 
@@ -372,7 +409,7 @@
           </div>
 
           <!-- Pay Button -->
-          <button id="pay-btn" onclick="processPayment()" class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 transition flex items-center justify-center gap-2">
+          <button id="pay-btn" onclick="processPayment()" class="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-teal-500/20 transition flex items-center justify-center gap-2">
             <span>Authorize & Capture Payment</span>
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </button>
