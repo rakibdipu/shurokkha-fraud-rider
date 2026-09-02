@@ -1,0 +1,11 @@
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
+sqlalchemy==2.0.41
+pydantic==2.13.4
+python-dotenv==1.1.1
+requests==2.32.5
+scikit-learn==1.7.1
+joblib==1.5.1
+numpy==2.2.6
+pandas==2.3.2
+cryptography==50.0.0
